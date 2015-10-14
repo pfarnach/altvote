@@ -1,0 +1,19 @@
+<div>
+	<div ng-click="$dismiss()">&times;</div>
+	<div>
+		<div>Make a Ballot</div>
+		<!-- add ballot option -->
+		<div>Name
+			<input type="text" ng-model="ballot.name" placeholder="Ballot name">
+		</div>
+		<div>Description
+			<input type="text" ng-model="ballot.description" placeholder="Ballot description">
+		</div>
+		<div>Ballot Choices
+			<input type="text" ng-model="options.currentOption" placeholder="Ballot choice">
+			<button ng-click="addBallotOption(options.currentOption)">Add</button>
+			<p ng-repeat="option in ballot_options">{{ option }}</p>
+		</div>
+	</div>
+	<button ng-click="createBallot()">Make Ballot Button</button>
+</div>

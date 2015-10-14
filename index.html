@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+
+	<title>Alt Vote</title>
+
+	<link rel="stylesheet" href="static/node_modules/bootstrap/dist/css/bootstrap.min.css">
+</head>
+<body ng-app="altVote">
+
+	<div class="container">
+		<div ui-view></div>
+	</div>
+
+	<!-- Dependencies -->
+	<script src="static/node_modules/angular/angular.js"></script>
+	<script src="static/node_modules/angular-ui-router/release/angular-ui-router.js"></script>
+	<script src="static/node_modules/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+
+	<!-- Main App -->
+	<script src="static/app.js"></script>
+
+	<!-- Home Module -->
+	<script src="static/modules/home/home.module.js"></script>
+	<script src="static/modules/home/BallotResource.service.js"></script>
+	<script src="static/modules/home/states/home/home.controller.js"></script>
+	<script src="static/modules/home/components/create-ballot-modal/create-ballot-modal.controller.js"></script>
+
+	<!-- Vote Module -->
+	<script src="static/modules/vote/vote.module.js"></script>
+	<script src="static/modules/vote/states/vote.controller.js"></script>
+	
+</body>
+</html>

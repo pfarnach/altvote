@@ -1,0 +1,6 @@
+keys.py
+config.py
+*.pyc
+ENV/
+.DS_Store
+static/node_modules/

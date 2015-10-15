@@ -4,7 +4,6 @@ from sqlalchemy import create_engine
 import models
 import keys
 import os
-import uuid
 import json
 
 base_dir = os.path.abspath(os.path.dirname(__file__))
@@ -33,13 +32,13 @@ def after_request(response):
 # routing for basic pages (pass routing onto the Angular app)
 @app.route('/')
 def index(**kwargs):
-    return make_response(open('index.html').read())
+  return make_response(open('index.html').read())
 
 # static path info: https://stackoverflow.com/questions/24099818/angularjs-not-running-in-flask-application
 # static path info: https://stackoverflow.com/questions/20646822/how-to-serve-static-files-in-flask
 @app.route('/<path:path>')
 def serve_js(path):
-    return send_from_directory('static', path)
+  return send_from_directory('static', path)
 
 def get_ballot_json(ballot):
 	return json.dumps(model_to_dict(ballot, recurse=True, backrefs=True, exclude=[models.Ballot.created]))  # ignore created date for now b/c serializer can't handle datetime.datetime
@@ -74,26 +73,40 @@ def update_json():
 def create_ballot():
 	if 'application/json' in request.environ['CONTENT_TYPE']:
 		data = request.json
-		ballot_uuid = uuid.uuid4()
-		models.Ballot.create(uuid=ballot_uuid, name=data['name'], description=data['description'], ballot_options=data['ballot_options'])
-		ballot = models.Ballot.get(models.Ballot.uuid == ballot_uuid)
-		return get_ballot_json(ballot)
+		choices = data['choices']
 
-@app.route('/get_ballot', methods=['GET'])
-def get_ballot():
-	ballot_uuid = request.args.get('uuid')
-	try:
-		ballot = models.Ballot.get(models.Ballot.uuid == ballot_uuid)
-		return get_ballot_json(ballot)
-	except models.BallotDoesNotExist:
-		return jsonify({'extryExists': False})
+		# set id and default vote count for each choice
+		for i, choice in enumerate(choices):
+			choice['id'] = i + 1
+			choice['vote_count'] = 0
+
+		# make ballot and save
+		ballot = models.Ballot(name=data['name'], description=data['description'], choices=data['choices'])
+		addAndCommit(ballot)
+		return jsonify(ballot=ballot.serialize)
+
+@app.route('/get_ballot/<uuid>', methods=['GET'])
+def get_ballot(uuid):
+	ballot = db.session.query(models.Ballot).filter(models.Ballot.uuid == uuid).first()
+	if ballot:
+		return jsonify(ballot=ballot.serialize)
+	else:
+		return "No entry found for uuid %s" % uuid
 
 @app.route('/get_all_ballots', methods=['GET'])
 def get_all_ballot():
 	ballots = jsonify(ballots=[i.serialize for i in models.Ballot.query.all()])
-	# for ballot in raw_ballots:
-	# 	ballots.append(model_to_dict(ballot, exclude=[models.Ballot.created]))
 	return ballots
+
+#
+# View Utils
+#
+def addAndCommit(toAdd):
+	db.session.add(toAdd)
+	db.session.commit()
 
 if __name__ == '__main__':
 	app.run(debug=DEBUG, port=PORT, host=HOST)
+
+# print sys.exc_info()[0]
+

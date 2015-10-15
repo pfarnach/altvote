@@ -1,22 +1,30 @@
 import datetime
-from app import db
+import uuid
 from sqlalchemy.dialects.postgresql import JSON
+
+from app import db
 
 class Ballot(db.Model):
 	__tablename__ = "ballot"
 	id = db.Column('id', db.Integer, primary_key=True)
+	uuid = db.Column('uuid', db.String, default=uuid.uuid4)
+	status = db.Column('status', db.String, default='ACTIVE')
 	creation_date = db.Column('creation_date', db.Integer, default=int(datetime.datetime.utcnow().strftime('%s')))
-	ballot_name = db.Column('ballot_name', db.String)
-	ballot_description = db.Column('ballot_description', db.String)
+	name = db.Column('name', db.String, nullable=False)
+	description = db.Column('description', db.String)
+	choices = db.Column('choices', JSON, nullable=False)
 
 	@property
 	def serialize(self):
 		"""Return object data in easily serializeable format"""
 		return {
-			'id': 								self.id,
-			'creation_date': 			self.creation_date,
-			'ballot_name': 				self.ballot_name,
-			'ballot_description': self.ballot_description
+			'id': 						self.id,
+			'uuid':						self.uuid,
+			'status':					self.status,
+			'creation_date':  self.creation_date,
+			'name': 					self.name,
+			'description':    self.description,
+			'choices':				self.choices
 		}
 
 class JsonTest(db.Model):
@@ -34,13 +42,3 @@ class JsonTest(db.Model):
 
 db.create_all()
 db.session.commit()
-
-# db.create_all()
-# ballot = Ballot(ballot_name="test name!", ballot_description="test description!")
-# db.session.add(ballot)
-
-# try:
-# 	db.session.commit()
-# except Exception as e:
-# 	db.session.rollback()
-# 	print str(e)

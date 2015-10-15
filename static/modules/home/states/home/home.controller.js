@@ -22,11 +22,4 @@ angular.module('alt-vote-home')
         });
 		};
 
-    $scope.makeJson = function() {
-      BallotResource.makeJson()
-        .then(function(resp) {
-          debugger;
-        });
-    };
-
 	});

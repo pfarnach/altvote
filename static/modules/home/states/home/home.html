@@ -2,11 +2,10 @@
 	<h1>Welcome to the Alternative Vote maker</h1>
 	<h3>Alternative voting is a way to vote where each voter is able to rank their choices, as opposed to the "first past the poll" system we have in the U.S.</h3>
 	<button ng-click="openCreateModal()">Make a Ballot</button>
-	<button ng-click="makeJson()">Make Json</button>
 
 	<div ng-repeat="ballot in ballots" style="margin-bottom:10px;">
-		<div>Name: <a ui-sref='vote({id: ballot.uuid})'>{{ ballot.ballot_name }}</a></div>
-		<div>Description: {{ ballot.ballot_description }}</div>
+		<div>Name: <a ui-sref='vote({uuid: ballot.uuid})'>{{ ballot.name }}</a></div>
+		<div>Description: {{ ballot.description }}</div>
 		<div>Created on: {{ ballot.creation_date * 1000 | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>
 	</div>
 </div>

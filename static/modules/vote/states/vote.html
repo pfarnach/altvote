@@ -3,4 +3,8 @@
 <div>Name: {{ ballot.name }}</div>
 <div>Description: {{ ballot.description }}</div>
 <div>UUID: {{ ballot.uuid }}</div>
-<div>Ballot options: {{ ballot.ballot_options }}</div>
+<div>Choices:
+	<div ng-repeat="choice in ballot.choices">
+		<span>{{ choice.name }}: {{ choice.vote_count }}</span>
+	</div>
+</div>

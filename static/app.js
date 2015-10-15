@@ -20,12 +20,12 @@ angular.module('altVote', ['alt-vote-home', 'alt-vote-vote', 'ui.router', 'ui.bo
 	      controller: 'HomeController'
 	    })
 	    .state('vote', {
-	    	url: '/ballot/:id',
+	    	url: '/ballot/:uuid',
 	    	templateUrl: 'static/modules/vote/states/vote.html',
 	    	controller: 'VoteController',
 	    	resolve: {
 	    		ballot: function($stateParams, BallotResource) {
-	    			return BallotResource.getBallot($stateParams.id)
+	    			return BallotResource.getBallot($stateParams.uuid)
 	    				.then(function(resp) {
 	    					return resp;
 	    				});

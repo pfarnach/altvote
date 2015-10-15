@@ -1,10 +1,9 @@
-from flask import Flask, jsonify, g, make_response, send_from_directory, request
+from flask import Flask, jsonify, make_response, send_from_directory, request
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 import models
 import keys
 import os
-import json
 
 base_dir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__, static_url_path='/static')
@@ -17,18 +16,6 @@ DEBUG = True
 PORT = 8000
 HOST = '0.0.0.0'
 
-@app.before_request
-def before_request():
-	"""Connect to the Database before each request"""
-	# g.db = models.DATABASE
-	# g.db.connect()
-
-@app.after_request
-def after_request(response):
-	"""Close db connection after each request"""
-	# g.db.close()
-	return response
-
 # routing for basic pages (pass routing onto the Angular app)
 @app.route('/')
 def index(**kwargs):
@@ -39,9 +26,6 @@ def index(**kwargs):
 @app.route('/<path:path>')
 def serve_js(path):
   return send_from_directory('static', path)
-
-def get_ballot_json(ballot):
-	return json.dumps(model_to_dict(ballot, recurse=True, backrefs=True, exclude=[models.Ballot.created]))  # ignore created date for now b/c serializer can't handle datetime.datetime
 
 ### JSON TEST
 @app.route('/make_json', methods=['POST'])
@@ -98,15 +82,13 @@ def get_all_ballot():
 	ballots = jsonify(ballots=[i.serialize for i in models.Ballot.query.all()])
 	return ballots
 
-#
 # View Utils
-#
 def addAndCommit(toAdd):
 	db.session.add(toAdd)
 	db.session.commit()
 
+# To get the show on the road
 if __name__ == '__main__':
 	app.run(debug=DEBUG, port=PORT, host=HOST)
 
 # print sys.exc_info()[0]
-

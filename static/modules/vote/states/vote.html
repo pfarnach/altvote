@@ -2,9 +2,25 @@
 
 <div>Name: {{ ballot.name }}</div>
 <div>Description: {{ ballot.description }}</div>
-<div>UUID: {{ ballot.uuid }}</div>
-<div>Choices:
+<div ng-if="readOnly">
+	Choices:
 	<div ng-repeat="choice in ballot.choices">
 		<span>{{ choice.name }}: {{ choice.vote_count }}</span>
+	</div>
+</div>
+<div ng-if="!readOnly">
+	<div>Rank you choices!</div>
+	<div ng-repeat="choice in ballot.choices">
+		<div>
+			<select
+				ng-model="selected[choice.id]"
+				ng-options="rank as rank for rank in availableRanks"
+			></select>
+			<span>{{ choice.name }}</span>
+		</div>
+	</div>
+	<button ng-click="validateAnswer()">Answer</button>
+	<div ng-show="!form.valid && form.submitted">
+	{{ form.message }}
 	</div>
 </div>

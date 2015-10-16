@@ -7,6 +7,7 @@ angular.module('alt-vote-home')
 			createBallot: createBallot,
 			getBallot: getBallot,
 			getAllBallots: getAllBallots,
+			castVote: castVote
 		}
 
 		function createBallot(ballot) {
@@ -33,6 +34,10 @@ angular.module('alt-vote-home')
 				.then(function(resp){
 					return resp.data.ballots;
 				});
+		}
+
+		function castVote() {
+			console.log('yay you made it');
 		}
 
 	});

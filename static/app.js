@@ -1,6 +1,12 @@
 'use strict';
 
-angular.module('altVote', ['alt-vote-home', 'alt-vote-vote', 'ui.router', 'ui.bootstrap'])
+angular.module('altVote', [
+	'alt-vote-home',
+	'alt-vote-vote',
+	'ui.router',
+	'ui.bootstrap',
+	'ngCookies'
+	])
 
 	.config(function($stateProvider, $httpProvider, $urlRouterProvider) {
 

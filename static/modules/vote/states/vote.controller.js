@@ -2,7 +2,9 @@
 
 angular.module('alt-vote-vote')
 	.controller('VoteController', function($scope, $cookies, ballot, BallotResource) {
-    $scope.ballot = ballot;
+    
+    $scope.ballot = ballot.ballot;
+    $scope.choices = ballot.choices;
     $scope.readOnly = false;
     $scope.selected = {};
     $scope.form = {
@@ -11,17 +13,17 @@ angular.module('alt-vote-vote')
     };
 
     // rank values to choose from
-    $scope.availableRanks = _.range(1, ballot.choices.length + 1);
+    $scope.availableRanks = _.range(1, $scope.choices.length + 1);
     $scope.availableRanks.unshift('');
     
     // make default unselected
-    _.each(ballot.choices, function(choice) {
-    	$scope.selected[choice.id] = '';
+    _.each($scope.choices, function(choice, i) {
+    	$scope.selected[i+1] = {
+    		value: '',
+    		ballot_id: choice.ballot_id,
+    		id: choice.id
+    	}
     });
-
-    $scope.validateChoice = function(selected) {
-    	console.log('selected', selected);
-    };
 
     $scope.validateAnswer = function() {
     	var raw_answers;
@@ -30,7 +32,7 @@ angular.module('alt-vote-vote')
     	$scope.form.valid = true;
 
     	raw_answers = _($scope.selected)
-    							.map(function(val) { return val; })
+    							.map(function(choice) { return choice.value; })
     							.compact()
 						    	.value()
 						    	.sort();
@@ -46,7 +48,7 @@ angular.module('alt-vote-vote')
     	}
 
     	if ($scope.form.valid) {
-    		BallotResource.castVote();
+    		BallotResource.castVote($scope.selected);
 	    	// Temporary solution: set cookie to see if they've done poll already
 		    // $cookies.put(ballot.uuid, 'answered');
 		    // checkCookie();    		

@@ -17,7 +17,7 @@ angular.module('alt-vote-home')
 					description: ballot.description,
 					choices: ballot.choices
 				})
-				.then(function(resp){
+				.then(function(resp) {
 					return resp.data;
 				});
 		}
@@ -25,7 +25,7 @@ angular.module('alt-vote-home')
 		function getBallot(uuid) {
 			return $http.get('/get_ballot/' + uuid)
 				.then(function(resp){
-					return resp.data.ballot;
+					return resp.data;
 				});
 		}
 
@@ -36,8 +36,15 @@ angular.module('alt-vote-home')
 				});
 		}
 
-		function castVote() {
-			console.log('yay you made it');
+		function castVote(raw_ranked_choices) {
+			var ranked_choices = _.map(raw_ranked_choices, function(val) { return val; });
+			return $http.post('/cast_vote',
+				{
+					ranked_choices: ranked_choices
+				})
+				.then(function(resp) {
+					return resp.data;
+				});
 		}
 
 	});

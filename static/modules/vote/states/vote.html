@@ -4,23 +4,23 @@
 <div>Description: {{ ballot.description }}</div>
 <div ng-if="readOnly">
 	Choices:
-	<div ng-repeat="choice in ballot.choices">
+	<div ng-repeat="choice in choices">
 		<span>{{ choice.name }}: {{ choice.vote_count }}</span>
 	</div>
 </div>
 <div ng-if="!readOnly">
-	<div>Rank you choices!</div>
-	<div ng-repeat="choice in ballot.choices">
+	<div>Rank your choices!</div>
+	<div ng-repeat="choice in choices">
 		<div>
 			<select
-				ng-model="selected[choice.id]"
-				ng-options="rank as rank for rank in availableRanks"
-			></select>
+				ng-model="selected[choice.id].value"
+				ng-options="rank as rank for rank in availableRanks">
+			</select>
 			<span>{{ choice.name }}</span>
 		</div>
 	</div>
 	<button ng-click="validateAnswer()">Answer</button>
 	<div ng-show="!form.valid && form.submitted">
-	{{ form.message }}
+		{{ form.message }}
 	</div>
 </div>

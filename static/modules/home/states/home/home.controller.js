@@ -17,8 +17,8 @@ angular.module('alt-vote-home')
         });
 
       modalInstance.result
-        .then(function(ballot) {
-          $state.go('vote', { id: ballot.uuid });
+        .then(function(resp) {
+          $state.go('vote', { id: resp.ballot.uuid });
         });
 		};
 

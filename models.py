@@ -12,7 +12,7 @@ class Ballot(db.Model):
 	creation_date = db.Column('creation_date', db.Integer, default=int(datetime.datetime.utcnow().strftime('%s')))
 	name = db.Column('name', db.String, nullable=False)
 	description = db.Column('description', db.String)
-	ballot_choices = db.relationship("BallotChoice")
+	ballot_options = db.relationship("BallotOption")
 
 	@property
 	def serialize(self):
@@ -26,8 +26,8 @@ class Ballot(db.Model):
 			'description':    self.description
 		}
 
-class BallotChoice(db.Model):
-	__tablename__ = "ballot_choice"
+class BallotOption(db.Model):
+	__tablename__ = "ballot_option"
 	id = db.Column('id', db.Integer, primary_key=True)
 	ballot_id = db.Column('ballot_id', db.Integer, db.ForeignKey('ballot.id'))
 	name = db.Column('name', db.String, nullable=False)
@@ -37,38 +37,27 @@ class BallotChoice(db.Model):
 	def serialize(self):
 		"""Return object data in easily serializeable format"""
 		return {
-			'id': 						self.id,
-			'ballot_id':			self.ballot_id,
-			'name': 					self.name
+			'id': 				self.id,
+			'ballot_id':	self.ballot_id,
+			'name': 			self.name
 		}
 
 class BallotVote(db.Model):
 	__tablename__ = 'ballot_vote'
 	id = db.Column('id', db.Integer, primary_key=True)
-	ballot_choices = db.Column('ballot_choices', db.Integer, db.ForeignKey('ballot_choice.id'))
-	ballot_vote_ranks = db.relationship("BallotVoteRank")
+	vote_id = db.Column('uuid', db.String, nullable=False)
+	ballot_option_id = db.Column('ballot_option', db.Integer, db.ForeignKey('ballot_option.id'), nullable=False)
+	rank = db.Column('rank', db.Integer, nullable=False)
+	db.UniqueConstraint('ballot_option', 'id')
 
 	@property
 	def serialize(self):
 		"""Return object data in easily serializeable format"""
 		return {
 			'id': 						self.id,
-			'ballot_choice':	self.ballot_choice
-		}
-
-class BallotVoteRank(db.Model):
-	__tablename__ = 'ballot_vote_rank'
-	id = db.Column('id', db.Integer, primary_key=True)
-	ballot_vote = db.Column('vote_vote', db.Integer, db.ForeignKey('ballot_vote.id'))
-	ranking = db.Column('ranking', db.Integer, nullable=False)
-
-	@property
-	def serialize(self):
-		"""Return object data in easily serializeable format"""
-		return {
-			'id': 						self.id,
-			'ballot_vote':		self.ballot_vote,
-			'ranking':				self.ranking
+			'vote_id':				self.vote_id,
+			'ballot_option':	self.ballot_option,
+			'rank':						self.rank
 		}
 
 db.create_all()

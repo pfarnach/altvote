@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, make_response, send_from_directory, request
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
+import uuid
 import models
 import keys
 import os
@@ -27,60 +28,34 @@ def index(**kwargs):
 def serve_js(path):
   return send_from_directory('static', path)
 
-# ### JSON TEST
-# @app.route('/make_json', methods=['POST'])
-# def make_json():
-# 	if 'application/json' in request.environ['CONTENT_TYPE']:
-# 		test = models.JsonTest(jblob=request.json)
-# 		# test = models.Ballot(ballot_name="Yolo1", ballot_description="Yolo1 description")
-# 		db.session.add(test)
-# 		try:
-# 			db.session.commit()
-# 		except Exception as e:
-# 			db.session.rollback()
-# 			print str(e)
-# 		print
-# 		print request.json
-# 		print
-# 	return request.json
-
-# ### JSON TEST
-# @app.route('/update_json', methods=['PUT'])
-# def update_json():
-# 	tests = db.session.query(models.JsonTest).filter(models.JsonTest.id == 1).first()
-# 	tests.jblob['description'] = "Look! An updated description"
-# 	db.session.query(models.JsonTest).filter(models.JsonTest.id == 1).update({'jblob': tests.jblob })
-# 	db.session.commit()
-# 	print 'updated'
-
 @app.route('/create_ballot', methods=['POST'])
 def create_ballot():
 	if 'application/json' in request.environ['CONTENT_TYPE']:
 		data = request.json
-		choices = data['choices']
-		new_choices = [];
+		options = data['options']
+		new_options = [];
 
 		# make ballot and save
 		ballot = models.Ballot(name=data['name'], description=data['description'])
 		addAndCommit(ballot)
 
-		# make choices and save
-		for choice in choices:
-			choice_to_add = models.BallotChoice(name=choice['name'], ballot_id=ballot.id)
-			new_choices.append(choice_to_add)
-			db.session.add(choice_to_add)
+		# make options and save
+		for option in options:
+			option_to_add = models.BallotOption(name=option['name'], ballot_id=ballot.id)
+			new_options.append(option_to_add)
+			db.session.add(option_to_add)
 
 		db.session.commit()
 
-		return jsonify(ballot=ballot.serialize, choices=[c.serialize for c in new_choices])
+		return jsonify(ballot=ballot.serialize, options=[c.serialize for c in new_options])
 
 @app.route('/get_ballot/<uuid>', methods=['GET'])
 def get_ballot(uuid):
 	ballot = db.session.query(models.Ballot).filter(models.Ballot.uuid == uuid).first()
-	choices = db.session.query(models.BallotChoice).filter(models.BallotChoice.ballot_id == ballot.id).all()
+	options = db.session.query(models.BallotOption).filter(models.BallotOption.ballot_id == ballot.id).all()
 
 	if ballot:
-		return jsonify(ballot=ballot.serialize, choices=[c.serialize for c in choices])
+		return jsonify(ballot=ballot.serialize, options=[c.serialize for c in options])
 	else:
 		return "No entry found for uuid %s" % uuid
 
@@ -92,11 +67,41 @@ def get_all_ballot():
 @app.route('/cast_vote', methods=['POST'])
 def cast_vote():
 	if 'application/json' in request.environ['CONTENT_TYPE']:
-			ranked_choices = request.json['ranked_choices']
-			for rc in ranked_choices:
-				print rc['ballot_id']
-				print rc['id']
-				print rc['value']
+		vote_id = uuid.uuid4()	
+		ranked_options = request.json['ranked_options']
+		for rc in ranked_options:
+			if rc['rank']:
+				cast_vote = models.BallotVote(vote_id=vote_id, ballot_option_id=rc['id'], rank=rc['rank'])
+				db.session.add(cast_vote)
+		db.session.commit()
+	return 'Vote cast successfully'
+
+@app.route('/get_results/<uuid>', methods=['GET'])
+def get_results(uuid):
+	ballot = db.session.query(models.Ballot).filter(models.Ballot.uuid == uuid).first()
+	options = db.session.query(models.BallotOption).filter(models.BallotOption.ballot_id == ballot.id).all()
+	options_with_count=[c.serialize for c in options]
+
+	# get total count to calculate percentage of votes won by each choice
+	total_votes_cast = len((db.session
+													.query(models.BallotVote)
+		                    	.filter(models.BallotOption.ballot_id == ballot.id, models.BallotVote.rank == 1)
+		                    	.all()))
+
+	# for each ballot option, find how many 1st round votes it got (will make this recursive later)
+	for option in options_with_count:
+		votes_per_option = (db.session
+												.query(models.BallotVote)
+		                    .filter(models.BallotVote.ballot_option_id == option['id'], models.BallotVote.rank == 1)
+		                    .all())
+		option['round_1_votes'] = len(votes_per_option)
+
+	if ballot:
+		return jsonify(ballot=ballot.serialize,
+									 options=options_with_count,
+									 meta={'count': total_votes_cast} )
+	else:
+		return "No entry found for uuid %s" % uuid
 
 # View Utils
 def addAndCommit(toAdd):

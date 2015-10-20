@@ -7,7 +7,8 @@ angular.module('alt-vote-home')
 			createBallot: createBallot,
 			getBallot: getBallot,
 			getAllBallots: getAllBallots,
-			castVote: castVote
+			castVote: castVote,
+			getResults: getResults
 		}
 
 		function createBallot(ballot) {
@@ -15,7 +16,7 @@ angular.module('alt-vote-home')
 				{		
 					name: ballot.name,
 					description: ballot.description,
-					choices: ballot.choices
+					options: ballot.options
 				})
 				.then(function(resp) {
 					return resp.data;
@@ -36,13 +37,20 @@ angular.module('alt-vote-home')
 				});
 		}
 
-		function castVote(raw_ranked_choices) {
-			var ranked_choices = _.map(raw_ranked_choices, function(val) { return val; });
+		function castVote(raw_ranked_options) {
+			var ranked_options = _.map(raw_ranked_options, function(val) { return val; });
 			return $http.post('/cast_vote',
 				{
-					ranked_choices: ranked_choices
+					ranked_options: ranked_options
 				})
 				.then(function(resp) {
+					return resp.data;
+				});
+		}
+
+		function getResults(ballot_uuid) {
+			return $http.get('/get_results/' + ballot_uuid)
+				.then(function(resp){
 					return resp.data;
 				});
 		}

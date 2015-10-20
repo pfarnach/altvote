@@ -4,7 +4,7 @@ angular.module('alt-vote-vote')
 	.controller('VoteController', function($scope, $cookies, ballot, BallotResource) {
     
     $scope.ballot = ballot.ballot;
-    $scope.choices = ballot.choices;
+    $scope.options = ballot.options;
     $scope.readOnly = false;
     $scope.selected = {};
     $scope.form = {
@@ -13,17 +13,23 @@ angular.module('alt-vote-vote')
     };
 
     // rank values to choose from
-    $scope.availableRanks = _.range(1, $scope.choices.length + 1);
+    $scope.availableRanks = _.range(1, $scope.options.length + 1);
     $scope.availableRanks.unshift('');
     
     // make default unselected
-    _.each($scope.choices, function(choice, i) {
+    _.each($scope.options, function(option, i) {
     	$scope.selected[i+1] = {
-    		value: '',
-    		ballot_id: choice.ballot_id,
-    		id: choice.id
+    		rank: '',
+    		ballot_id: option.ballot_id,
+    		id: option.id
     	}
     });
+
+    $scope.getResults = function() {
+    	BallotResource.getResults($scope.ballot.uuid)
+    		.then(function(resp) {
+    		});
+    };
 
     $scope.validateAnswer = function() {
     	var raw_answers;
@@ -32,13 +38,13 @@ angular.module('alt-vote-vote')
     	$scope.form.valid = true;
 
     	raw_answers = _($scope.selected)
-    							.map(function(choice) { return choice.value; })
+    							.map(function(option) { return option.rank; })
     							.compact()
 						    	.value()
 						    	.sort();
 
     	if (!raw_answers.length) {
-				$scope.form.message = "You have to rank at least one choice";
+				$scope.form.message = "You have to rank at least one option";
 				$scope.form.valid = false;
     	} else if (_.isNumber(raw_answers[0]) && raw_answers[0] === 1) {
     		checkNextVal(raw_answers, 0);
@@ -51,7 +57,7 @@ angular.module('alt-vote-vote')
     		BallotResource.castVote($scope.selected);
 	    	// Temporary solution: set cookie to see if they've done poll already
 		    // $cookies.put(ballot.uuid, 'answered');
-		    // checkCookie();    		
+		    // checkCookie();
     	}
     };
 
@@ -72,7 +78,6 @@ angular.module('alt-vote-vote')
 
     function checkCookie() {
     	if ($cookies.get(ballot.uuid)) {
-    		console.log($cookies.get(ballot.uuid));
 				$scope.readOnly = true;
     	}
     }

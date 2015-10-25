@@ -1,6 +1,9 @@
+from __future__ import division
+
 from flask import Flask, jsonify, make_response, send_from_directory, request
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
+
 import uuid
 import models
 import keys
@@ -82,26 +85,72 @@ def get_results(uuid):
 	options = db.session.query(models.BallotOption).filter(models.BallotOption.ballot_id == ballot.id).all()
 	options_with_count=[c.serialize for c in options]
 
+	for option in options_with_count:
+		option['votes_by_round'] = {};
+
 	# get total count to calculate percentage of votes won by each choice
-	total_votes_cast = len((db.session
+	all_first_round_votes = (db.session
 													.query(models.BallotVote)
 		                    	.filter(models.BallotOption.ballot_id == ballot.id, models.BallotVote.rank == 1)
-		                    	.all()))
+		                    	.all())
 
 	# for each ballot option, find how many 1st round votes it got (will make this recursive later)
-	for option in options_with_count:
-		votes_per_option = (db.session
-												.query(models.BallotVote)
-		                    .filter(models.BallotVote.ballot_option_id == option['id'], models.BallotVote.rank == 1)
-		                    .all())
-		option['round_1_votes'] = len(votes_per_option)
+	options_final = fetchVotesPerOption(options_with_count, len(all_first_round_votes), 1, [v.serialize for v in all_first_round_votes])
 
-	if ballot:
-		return jsonify(ballot=ballot.serialize,
-									 options=options_with_count,
-									 meta={'count': total_votes_cast} )
+	return jsonify(ballot=ballot.serialize,
+								 options=options_final,
+								 meta={'count': len(all_first_round_votes)} )
+
+def fetchVotesPerOption(options, total_votes, current_round, all_current_round_votes):
+	for option in options:
+		try:
+			# check to see if it was marked as eliminated
+			if option['votes_by_round'][current_round] == 0:
+				eliminated_votes_uuids = []
+				
+				for v in all_current_round_votes:
+					if v['ballot_option_id'] == option['id']:
+						eliminated_votes_uuids.append(v['vote_id'])
+
+				next_round_votes = (db.session
+														.query(models.BallotVote)
+				                    .filter(models.BallotVote.vote_id.in_(eliminated_votes_uuids), models.BallotVote.rank == current_round)
+				                    .all())
+				options = redistributeVotes([v.serialize for v in next_round_votes], options, current_round)
+				option['votes_by_round'][current_round] = 0
+		except KeyError:
+			votes_per_option = (db.session
+													.query(models.BallotVote)
+			                    .filter(models.BallotVote.ballot_option_id == option['id'], models.BallotVote.rank == current_round)
+			                    .all())
+			option['votes_by_round'][current_round] = len(votes_per_option)
+
+	if checkIfMajority(options, total_votes, current_round):
+		return options
 	else:
-		return "No entry found for uuid %s" % uuid
+		eliminateLastPlace(options, current_round)
+	return fetchVotesPerOption(options, total_votes, current_round + 1, all_current_round_votes)
+
+def checkIfMajority(options, total_votes, current_round):
+	for option in options:
+		if option['votes_by_round'].get(current_round) / total_votes > 0.5:
+			return True
+	return False
+
+def eliminateLastPlace(options, current_round):
+	# order in ascending order to eliminate lowest
+	options.sort(key=lambda x: x['votes_by_round'].get(current_round))
+	# set next round to False so it's removed from vote counting	
+	options[0]['votes_by_round'][current_round + 1] = 0
+
+def redistributeVotes(redib_votes, options, current_round):
+	for option in options:
+		# If option wasn't eliminated, set its next round count to what it already had
+		option['votes_by_round'][current_round] = option['votes_by_round'][current_round-1]
+		for vote in redib_votes:
+			if vote['ballot_option_id'] == option['id']:
+				option['votes_by_round'][current_round] += 1
+	return options
 
 # View Utils
 def addAndCommit(toAdd):

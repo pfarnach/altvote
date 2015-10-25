@@ -47,17 +47,18 @@ class BallotVote(db.Model):
 	id = db.Column('id', db.Integer, primary_key=True)
 	vote_id = db.Column('uuid', db.String, nullable=False)
 	ballot_option_id = db.Column('ballot_option', db.Integer, db.ForeignKey('ballot_option.id'), nullable=False)
+	creation_date = db.Column('creation_date', db.Integer, default=int(datetime.datetime.utcnow().strftime('%s')))
 	rank = db.Column('rank', db.Integer, nullable=False)
-	db.UniqueConstraint('ballot_option', 'id')
+	db.UniqueConstraint('ballot_option_id', 'id')
 
 	@property
 	def serialize(self):
 		"""Return object data in easily serializeable format"""
 		return {
-			'id': 						self.id,
-			'vote_id':				self.vote_id,
-			'ballot_option':	self.ballot_option,
-			'rank':						self.rank
+			'id': 							self.id,
+			'vote_id':					self.vote_id,
+			'ballot_option_id':	self.ballot_option_id,
+			'rank':							self.rank
 		}
 
 db.create_all()

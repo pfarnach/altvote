@@ -13,7 +13,7 @@
 	<div ng-repeat="option in options">
 		<div>
 			<select
-				ng-model="selected[option.id].rank"
+				ng-model="selected[$index].rank"
 				ng-options="rank as rank for rank in availableRanks">
 			</select>
 			<span>{{ option.name }}</span>

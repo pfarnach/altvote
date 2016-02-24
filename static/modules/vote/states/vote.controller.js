@@ -14,11 +14,10 @@ angular.module('alt-vote-vote')
 
     // rank values to choose from
     $scope.availableRanks = _.range(1, $scope.options.length + 1);
-    $scope.availableRanks.unshift('');
     
     // make default unselected
     _.each($scope.options, function(option, i) {
-    	$scope.selected[i+1] = {
+    	$scope.selected[i] = {
     		rank: '',
     		ballot_id: option.ballot_id,
     		id: option.id
@@ -27,8 +26,8 @@ angular.module('alt-vote-vote')
 
     $scope.getResults = function() {
     	BallotResource.getResults($scope.ballot.uuid)
-    		.then(function(resp) {
-    		});
+				.then(function(resp) {
+        });
     };
 
     $scope.validateAnswer = function() {
@@ -38,10 +37,10 @@ angular.module('alt-vote-vote')
     	$scope.form.valid = true;
 
     	raw_answers = _($scope.selected)
-    							.map(function(option) { return option.rank; })
-    							.compact()
-						    	.value()
-						    	.sort();
+    					.map(function(option) { return option.rank; })
+    					.compact()
+    			    	.value()
+    			    	.sort();
 
     	if (!raw_answers.length) {
 				$scope.form.message = "You have to rank at least one option";

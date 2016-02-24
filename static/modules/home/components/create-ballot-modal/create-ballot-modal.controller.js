@@ -4,11 +4,11 @@ angular.module('alt-vote-home')
 	.controller('CreateBallotController', function($scope, $modalInstance, BallotResource) {
 
 		$scope.ballot = {};
-		$scope.ballot.choices = [];
+		$scope.ballot.options = [];
 		$scope.options = {};
 
-		$scope.addBallotChoice = function(choice) {
-			$scope.ballot.choices.push({name: choice});
+		$scope.addBallotOption = function(choice) {
+			$scope.ballot.options.push({name: choice});
 			$scope.options.currentOption = '';
 		};
 

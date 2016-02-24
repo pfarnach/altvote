@@ -10,8 +10,8 @@
 		</div>
 		<div>Ballot Choices
 			<input type="text" ng-model="options.currentOption" placeholder="Choice title">
-			<button ng-click="addBallotChoice(options.currentOption)">Add</button>
-			<p ng-repeat="choice in ballot.choices">{{ choice.name }}</p>
+			<button ng-click="addBallotOption(options.currentOption)">Add</button>
+			<p ng-repeat="option in ballot.options">{{ option.name }}</p>
 		</div>
 	</div>
 	<button ng-click="createBallot()">Make Ballot Button</button>

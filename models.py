@@ -45,6 +45,7 @@ class BallotOption(db.Model):
 class BallotVote(db.Model):
 	__tablename__ = 'ballot_vote'
 	id = db.Column('id', db.Integer, primary_key=True)
+	ballot_id = db.Column('ballot_id', db.Integer, nullable=False)
 	vote_id = db.Column('uuid', db.String, nullable=False)
 	ballot_option_id = db.Column('ballot_option', db.Integer, db.ForeignKey('ballot_option.id'), nullable=False)
 	creation_date = db.Column('creation_date', db.Integer, default=int(datetime.datetime.utcnow().strftime('%s')))
@@ -56,6 +57,7 @@ class BallotVote(db.Model):
 		"""Return object data in easily serializeable format"""
 		return {
 			'id': 							self.id,
+			'ballot_id':				self.ballot_id,
 			'vote_id':					self.vote_id,
 			'ballot_option_id':	self.ballot_option_id,
 			'rank':							self.rank

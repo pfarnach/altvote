@@ -27,18 +27,18 @@ class Election:
 		(self.votes, count) = self.__eliminateZeroVotes(self.votes, count)
 
 		# calc ballot percentage and check if > 50%
-		(result, perc_vote_won) = self.__findWinner(count, total_votes_for_round)
+		(result, perc_vote_by_candidate) = self.__findWinner(count, total_votes_for_round)
 
-		print "\nVote percentages for round: " + str(perc_vote_won)
+		print "\nVote percentages for round: " + str(perc_vote_by_candidate)
 
 		if len(result.winners) > 1:
-			print "\nTie!: " + str(perc_vote_won)
-			return perc_vote_won
+			print "\nTie!: " + str(perc_vote_by_candidate)
+			return perc_vote_by_candidate
 		elif len(result.winners) == 1:
-			print "\nWinner!: " + str(perc_vote_won)
-			return perc_vote_won
+			print "\nWinner!: " + str(perc_vote_by_candidate)
+			return perc_vote_by_candidate
 
-		elimatedCandidates = self.__findEliminatedCandidates(self.votes, perc_vote_won)
+		elimatedCandidates = self.__findEliminatedCandidates(self.votes, perc_vote_by_candidate)
 		print "\nCandidates to be removed after this round: " + str(elimatedCandidates) + "\n"
 
 		self.votes = self.__eliminateCandidateFromVotes(self.votes, elimatedCandidates)	
@@ -78,25 +78,25 @@ class Election:
 		return (votes, count)
 
 	def __findWinner(self, count, total_votes_for_round):
-		perc_vote_won = {}
+		perc_vote_by_candidate = {}
 		winners = {}
 
 		# See if one candidate has majority
 		for candidate, votes in count.iteritems():
-			perc_vote_won[candidate] = votes / total_votes_for_round
-			if perc_vote_won[candidate] > 0.5:
-				winners[candidate] = perc_vote_won[candidate]
+			perc_vote_by_candidate[candidate] = votes / total_votes_for_round
+			if perc_vote_by_candidate[candidate] > 0.5:
+				winners[candidate] = perc_vote_by_candidate[candidate]
 
 		# Check for tie between all remaining candidates
-		if len(set(perc_vote_won.values()))==1:
-			winners = perc_vote_won
+		if len(set(perc_vote_by_candidate.values()))==1:
+			winners = perc_vote_by_candidate
 
-		return (ElectionResult(winners), perc_vote_won)
+		return (ElectionResult(winners), perc_vote_by_candidate)
 
-	def __findEliminatedCandidates(self, votes, perc_vote_won):
+	def __findEliminatedCandidates(self, votes, perc_vote_by_candidate):
 		# Find and return list of last place candidates
-		min_perc = min(perc_vote_won.itervalues())
-		eliminated = filter((lambda (c,perc): perc == min_perc), perc_vote_won.iteritems())
+		min_perc = min(perc_vote_by_candidate.itervalues())
+		eliminated = filter((lambda (c,perc): perc == min_perc), perc_vote_by_candidate.iteritems())
 
 		# convert tuple from filter to array
 		return [x[0] for x in eliminated]

@@ -2,12 +2,14 @@
 
 <div>Name: {{ ballot.name }}</div>
 <div>Description: {{ ballot.description }}</div>
+
 <div ng-if="readOnly">
 	Options:
 	<div ng-repeat="option in options">
 		<span>{{ option.name }}: {{ option.vote_count }}</span>
 	</div>
 </div>
+
 <div ng-if="!readOnly">
 	<div>Rank your options!</div>
 	<div ng-repeat="option in options">
@@ -19,9 +21,19 @@
 			<span>{{ option.name }}</span>
 		</div>
 	</div>
+
 	<button ng-click="validateAnswer()">Answer</button>
 	<div ng-show="!form.valid && form.submitted">
 		{{ form.message }}
 	</div>
 </div>
+
 <button ng-click="getResults()">Get results</button>
+
+<div ng-if="results.length">
+	Results after final round:
+	<div ng-repeat="result in results">
+		<span>{{ result.name }} - {{ result.percent_vote * 100 | number : 2 }}%</span>
+		<span ng-show="result.isWinner">-- Winner</span>
+	</div>
+</div>

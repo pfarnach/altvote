@@ -26,21 +26,20 @@ angular.module('alt-vote-vote')
 
     $scope.getResults = function() {
     	BallotResource.getResults($scope.ballot.uuid)
-				.then(function(resp) {
+        .then(function(resp) {
+          $scope.results = resp.result;
         });
     };
 
     $scope.validateAnswer = function() {
-    	var raw_answers;
-
     	$scope.form.submitted = true;
     	$scope.form.valid = true;
 
-    	raw_answers = _($scope.selected)
-    					.map(function(option) { return option.rank; })
-    					.compact()
-    			    	.value()
-    			    	.sort();
+    	var raw_answers = _($scope.selected)
+				.map('rank')
+				.compact()
+		    .value()
+		    .sort();
 
     	if (!raw_answers.length) {
 				$scope.form.message = "You have to rank at least one option";

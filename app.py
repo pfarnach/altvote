@@ -33,7 +33,7 @@ def index(**kwargs):
 def serve_js(path):
   return send_from_directory('static', path)
 
-@app.route('/create_ballot', methods=['POST'])
+@app.route('/api/create_ballot', methods=['POST'])
 def create_ballot():
 	if request.is_xhr:
 		data = request.json
@@ -50,11 +50,12 @@ def create_ballot():
 			new_options.append(option_to_add)
 			db.session.add(option_to_add)
 
+		# TODO: is this necessary?
 		db.session.commit()
 
 		return jsonify(ballot=ballot.serialize, options=[c.serialize for c in new_options])
 
-@app.route('/get_ballot/<uuid>', methods=['GET'])
+@app.route('/api/get_ballot/<uuid>', methods=['GET'])
 def get_ballot(uuid):
 	ballot = db.session.query(models.Ballot).filter(models.Ballot.uuid == uuid).first()
 	options = db.session.query(models.BallotOption).filter(models.BallotOption.ballot_id == ballot.id).all()
@@ -64,7 +65,7 @@ def get_ballot(uuid):
 	else:
 		return "No entry found for uuid %s" % uuid
 
-@app.route('/get_all_ballots', methods=['GET'])
+@app.route('/api/get_all_ballots', methods=['GET'])
 def get_all_ballot():
 	ballots = jsonify(ballots=[i.serialize for i in models.Ballot.query.all()])
 	return ballots
@@ -81,25 +82,22 @@ def cast_vote():
 		db.session.commit()
 	return 'Vote cast successfully'
 
-@app.route('/get_results/<uuid>', methods=['GET'])
+@app.route('/api/get_results/<uuid>', methods=['GET'])
 def get_results(uuid):
 	ballot = db.session.query(models.Ballot).filter(models.Ballot.uuid == uuid).first()
-	# options = db.session.query(models.BallotOption).filter(models.BallotOption.ballot_id == ballot.id).all()
-	# options_with_count=[c.serialize for c in options]
-
-	all_votes = (db.session
+	all_ballot_votes = (db.session
 								.query(models.BallotVote)
               	.filter(models.BallotOption.ballot_id == ballot.id)
               	.all())
 
-	votes = _getVotesList(all_votes)
+	votes = _getVotesList(all_ballot_votes)
 	election = count_utils.Election(votes)
 	results = election.getResults()
-	print "results:"
-	print results
+	results_with_options = _getResultsWithOptions(results)
 
-	return jsonify(ballot=ballot.serialize)
+	return jsonify(ballot=ballot.serialize, result=results_with_options)
 
+# Put votes into [{"candidate1": rank, "candidate2": rank}, {...}] format for count_utils
 def _getVotesList(raw_votes):
 	votes = {}
 
@@ -110,6 +108,25 @@ def _getVotesList(raw_votes):
 		votes[v.vote_id][v.ballot_option_id] = v.rank
 
 	return [count_utils.Vote(x) for x in votes.itervalues()]
+
+def _getResultsWithOptions(results):
+	winning_perc = max(results.values())
+	options = db.session.query(models.BallotOption).filter(models.BallotOption.ballot_id.in_(results.iterkeys()))
+	options_serialized = [x.serialize for x in options]
+
+	for option in options_serialized:
+		for candidate_id, perc_vote in results.iteritems():
+			if option['id'] == candidate_id:
+				option['percent_vote'] = perc_vote
+				if perc_vote == winning_perc:
+					option['isWinner'] = True
+				else:
+					option['isWinner'] = False
+			elif not 'percent_vote' in option:
+				option['percent_vote'] = 0
+				option['isWinner'] = False
+
+	return options_serialized
 
 # View Utils
 def addAndCommit(toAdd):

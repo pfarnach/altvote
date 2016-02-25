@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('alt-vote-home')
+angular.module('altVote')
 	.service('BallotResource', function($http) {
 		
 		return {
@@ -12,7 +12,7 @@ angular.module('alt-vote-home')
 		}
 
 		function createBallot(ballot) {
-			return $http.post('/create_ballot', 
+			return $http.post('/api/create_ballot', 
 				{		
 					name: ballot.name,
 					description: ballot.description,
@@ -24,14 +24,14 @@ angular.module('alt-vote-home')
 		}
 
 		function getBallot(uuid) {
-			return $http.get('/get_ballot/' + uuid)
+			return $http.get('/api/get_ballot/' + uuid)
 				.then(function(resp){
 					return resp.data;
 				});
 		}
 
 		function getAllBallots() {
-			return $http.get('/get_all_ballots')
+			return $http.get('/api/get_all_ballots')
 				.then(function(resp){
 					return resp.data.ballots;
 				});
@@ -39,7 +39,7 @@ angular.module('alt-vote-home')
 
 		function castVote(raw_ranked_options) {
 			var ranked_options = _.map(raw_ranked_options, function(val) { return val; });
-			return $http.post('/cast_vote',
+			return $http.post('/api/cast_vote',
 				{
 					ranked_options: ranked_options
 				})
@@ -49,7 +49,7 @@ angular.module('alt-vote-home')
 		}
 
 		function getResults(ballot_uuid) {
-			return $http.get('/get_results/' + ballot_uuid)
+			return $http.get('/api/get_results/' + ballot_uuid)
 				.then(function(resp){
 					return resp.data;
 				});

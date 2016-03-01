@@ -17,17 +17,17 @@ angular.module('altVote', [
 		$stateProvider
 	    .state('home1', {
 	      url: '',
-	      templateUrl: 'static/modules/home/states/home/home.html',
+	      templateUrl: 'app/modules/home/states/home/home.html',
 	      controller: 'HomeController'
 	    })
 	    .state('home2', {
 	      url: '/',
-	      templateUrl: 'static/modules/home/states/home/home.html',
+	      templateUrl: 'app/modules/home/states/home/home.html',
 	      controller: 'HomeController'
 	    })
 	    .state('vote', {
 	    	url: '/ballot/:uuid',
-	    	templateUrl: 'static/modules/vote/states/vote.html',
+	    	templateUrl: 'app/modules/vote/states/vote.html',
 	    	controller: 'VoteController',
 	    	resolve: {
 	    		ballot: function($stateParams, BallotResource) {

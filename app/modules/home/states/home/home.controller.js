@@ -13,7 +13,7 @@ angular.module('alt-vote-home')
         var modalInstance = $modal.open({
           backdrop: 'static',
           controller: 'CreateBallotController',
-          templateUrl: 'static/modules/home/components/create-ballot-modal/create-ballot-modal.html'
+          templateUrl: 'app/modules/home/components/create-ballot-modal/create-ballot-modal.html'
         });
 
       modalInstance.result

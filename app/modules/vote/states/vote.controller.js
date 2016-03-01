@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('alt-vote-vote')
-	.controller('VoteController', function($scope, $cookies, ballot, BallotResource) {
+	.controller('VoteController', function($scope, ballot, BallotResource) {
     
     $scope.ballot = ballot.ballot;
     $scope.options = ballot.options;
@@ -24,10 +24,11 @@ angular.module('alt-vote-vote')
     	}
     });
 
+    // Fetch results of ballot
     $scope.getResults = function() {
     	BallotResource.getResults($scope.ballot.uuid)
         .then(function(resp) {
-          $scope.results = resp.result;
+          $scope.results_by_round = resp.results_by_round;
         });
     };
 
@@ -75,9 +76,9 @@ angular.module('alt-vote-vote')
     }
 
     function checkCookie() {
-    	if ($cookies.get(ballot.uuid)) {
-				$scope.readOnly = true;
-    	}
+    // 	if ($cookies.get(ballot.uuid)) {
+				// $scope.readOnly = true;
+    // 	}
     }
 
     checkCookie();

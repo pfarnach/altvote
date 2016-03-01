@@ -30,10 +30,14 @@
 
 <button ng-click="getResults()">Get results</button>
 
-<div ng-if="results.length">
-	Results after final round:
-	<div ng-repeat="result in results">
-		<span>{{ result.name }} - {{ result.percent_vote * 100 | number : 2 }}%</span>
-		<span ng-show="result.isWinner">-- Winner</span>
+<div ng-if="results_by_round.length">
+	Results after {{ results_by_round.length }} round{{ results_by_round.length > 1 ? 's' : '' }} of voting:
+	<div ng-repeat="result_round in results_by_round">
+		<div>Round #{{$index + 1}}</div>
+		<div ng-repeat="result in result_round">
+			<span>{{ result.name }} - {{ result.percent_vote * 100 | number : 2 }}%</span>
+			<span ng-show="result.isWinner">-- Winner</span>
+		</div>
+		<div>---------------</div>
 	</div>
 </div>

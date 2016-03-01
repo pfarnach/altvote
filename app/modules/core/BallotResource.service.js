@@ -50,7 +50,7 @@ angular.module('altVote')
 
 		function getResults(ballot_uuid) {
 			return $http.get('/api/get_results/' + ballot_uuid)
-				.then(function(resp){
+				.then(function(resp) {
 					return resp.data;
 				});
 		}

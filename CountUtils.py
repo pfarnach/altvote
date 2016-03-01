@@ -10,7 +10,7 @@ class Election:
 		self.votes = votes
 		self.voting_round = 0
 
-	def getResults(self):
+	def getResults(self, results_by_round = []):
 		self.voting_round = self.voting_round + 1
 		print "\n************\nVoting Round: " + str(self.voting_round) + "\n"
 
@@ -28,24 +28,24 @@ class Election:
 
 		# calc ballot percentage and check if > 50%
 		(result, perc_vote_by_candidate) = self.__findWinner(count, total_votes_for_round)
+		results_by_round.append(perc_vote_by_candidate)
 
 		print "\nVote percentages for round: " + str(perc_vote_by_candidate)
 
 		if len(result.winners) > 1:
 			print "\nTie!: " + str(perc_vote_by_candidate)
-			return perc_vote_by_candidate
+			return results_by_round
 		elif len(result.winners) == 1:
 			print "\nWinner!: " + str(perc_vote_by_candidate)
-			return perc_vote_by_candidate
+			return results_by_round
 
 		elimatedCandidates = self.__findEliminatedCandidates(self.votes, perc_vote_by_candidate)
 		print "\nCandidates to be removed after this round: " + str(elimatedCandidates) + "\n"
 
 		self.votes = self.__eliminateCandidateFromVotes(self.votes, elimatedCandidates)	
-			
 		self.votes = self.__shiftCandidateRankings(self.votes)
 
-		return self.getResults()
+		return self.getResults(results_by_round)
 
 	def __countVotes(self, votes):
 		count = {}
@@ -71,7 +71,7 @@ class Election:
 		for i, v in enumerate(votes_iter):
 			for candidate, rank in v.candidates.iteritems():
 				if count.get(candidate) == 0 and v.candidates.has_key(candidate):
-					print "\nCandidate with 0 1st round votes to be deleted: " + candidate
+					print "\nCandidate with 0 1st round votes to be deleted: " + str(candidate)
 					del votes[i].candidates[candidate]
 					del count[candidate]
 

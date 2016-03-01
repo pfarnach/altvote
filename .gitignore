@@ -3,4 +3,4 @@ config.py
 *.pyc
 ENV/
 .DS_Store
-static/node_modules/
+node_modules/

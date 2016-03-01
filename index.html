@@ -8,7 +8,7 @@
 
 	<title>Alt Vote</title>
 
-	<link rel="stylesheet" href="static/node_modules/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
 </head>
 <body ng-app="altVote">
 
@@ -17,26 +17,26 @@
 	</div>
 
 	<!-- Dependencies -->
-	<script src="static/node_modules/angular/angular.js"></script>
-	<script src="static/node_modules/lodash/index.js"></script>
-	<script src="static/node_modules/angular-ui-router/release/angular-ui-router.js"></script>
-	<script src="static/node_modules/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-	<script src="static/node_modules/angular-cookies/angular-cookies.min.js"></script>
+	<script src="node_modules/angular/angular.js"></script>
+	<script src="node_modules/lodash/index.js"></script>
+	<script src="node_modules/angular-ui-router/release/angular-ui-router.js"></script>
+	<script src="node_modules/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+	<script src="node_modules/angular-cookies/angular-cookies.min.js"></script>
 
 	<!-- Main App -->
-	<script src="static/app.js"></script>
+	<script src="app/app.js"></script>
 
 	<!-- Core -->
-	<script src="static/modules/core/BallotResource.service.js"></script>
+	<script src="app/modules/core/BallotResource.service.js"></script>
 
 	<!-- Home Module -->
-	<script src="static/modules/home/home.module.js"></script>
-	<script src="static/modules/home/states/home/home.controller.js"></script>
-	<script src="static/modules/home/components/create-ballot-modal/create-ballot-modal.controller.js"></script>
+	<script src="app/modules/home/home.module.js"></script>
+	<script src="app/modules/home/states/home/home.controller.js"></script>
+	<script src="app/modules/home/components/create-ballot-modal/create-ballot-modal.controller.js"></script>
 
 	<!-- Vote Module -->
-	<script src="static/modules/vote/vote.module.js"></script>
-	<script src="static/modules/vote/states/vote.controller.js"></script>
+	<script src="app/modules/vote/vote.module.js"></script>
+	<script src="app/modules/vote/states/vote.controller.js"></script>
 	
 </body>
 </html>

@@ -4,3 +4,4 @@ config.py
 ENV/
 .DS_Store
 node_modules/
+migrations

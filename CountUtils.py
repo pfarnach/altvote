@@ -28,6 +28,8 @@ class Election:
 
 		# calc ballot percentage and check if > 50%
 		(result, perc_vote_by_candidate) = self.__findWinner(count, total_votes_for_round)
+
+		# keep track of results by round
 		results_by_round.append(perc_vote_by_candidate)
 
 		print "\nVote percentages for round: " + str(perc_vote_by_candidate)
@@ -66,16 +68,17 @@ class Election:
 
 	def __eliminateZeroVotes(self, votes, count):
 		votes_iter = deepcopy(votes)
+		candidates_to_delete = []
 
 		# If candidate has no first round votes, then it can be eliminated altogether
 		for i, v in enumerate(votes_iter):
 			for candidate, rank in v.candidates.iteritems():
 				if count.get(candidate) == 0 and v.candidates.has_key(candidate):
 					print "\nCandidate with 0 1st round votes to be deleted: " + str(candidate)
-					del votes[i].candidates[candidate]
+					candidates_to_delete.append(candidate)
 					del count[candidate]
 
-		return (votes, count)
+		return (self.__eliminateCandidateFromVotes(votes, list(set(candidates_to_delete))), count)
 
 	def __findWinner(self, count, total_votes_for_round):
 		perc_vote_by_candidate = {}

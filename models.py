@@ -1,6 +1,5 @@
 import datetime
 import uuid
-from sqlalchemy.dialects.postgresql import JSON
 
 from app import db
 
@@ -29,6 +28,7 @@ class Ballot(db.Model):
 class BallotOption(db.Model):
 	__tablename__ = "ballot_option"
 	id = db.Column('id', db.Integer, primary_key=True)
+	status = db.Column('status', db.String, default='ACTIVE')
 	ballot_id = db.Column('ballot_id', db.Integer, db.ForeignKey('ballot.id'))
 	name = db.Column('name', db.String, nullable=False)
 	ballot_votes = db.relationship("BallotVote")

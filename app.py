@@ -10,8 +10,6 @@ import os
 import keys
 import CountUtils
 from VoteUtils import VoteUtils
-import models
-
 
 base_dir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__, static_url_path='/')
@@ -19,6 +17,8 @@ app.secret_key = keys.secret_key
 app.config.from_pyfile('config.py')
 
 db = SQLAlchemy(app)
+
+import models
 
 DEBUG = True
 PORT = 8000

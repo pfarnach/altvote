@@ -28,7 +28,8 @@ angular.module('alt-vote-vote')
     $scope.getResults = function() {
     	BallotResource.getResults($scope.ballot.uuid)
         .then(function(resp) {
-          $scope.results_by_round = resp.results_by_round;
+          $scope.resultsByRound = resp.results_by_round;
+          $scope.totalBallotsCast = resp.total_ballots_cast;
         });
     };
 

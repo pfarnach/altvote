@@ -93,18 +93,26 @@ def cast_vote():
 
 @app.route('/api/get_results/<uuid>', methods=['GET'])
 def get_results(uuid):
+	# Fetch ballot and all votes cast for the ballot
 	ballot = db.session.query(models.Ballot).filter(models.Ballot.uuid == uuid).first()
-	all_ballot_votes = (db.session
+	ballot_votes = (db.session
 								.query(models.BallotVote)
               	.filter(models.BallotVote.ballot_id == ballot.id)
               	.all())
 
-	votes = _getVotesList(all_ballot_votes)
+	# Parry down list to get unique ballots cast
+	unique_ballots = {v.vote_id:v for v in ballot_votes}.values()
+	total_ballots_cast = len(unique_ballots)
+
+	# Get votes into right structure then do vote counting
+	votes = _getVotesList(ballot_votes)
 	election = CountUtils.Election(votes)
+
+	# Take results and marry candidate IDs back to candidate (option) info
 	results_by_round = election.getResults([])
 	results_by_round = _getResultsWithOptions(results_by_round, ballot.id)
 
-	return jsonify(ballot=ballot.serialize, results_by_round=results_by_round)
+	return jsonify(ballot=ballot.serialize, results_by_round=results_by_round, total_ballots_cast=total_ballots_cast)
 
 # Put votes into [{"candidate1": rank, "candidate2": rank}, {...}] format for CountUtils
 def _getVotesList(raw_votes):

@@ -24,6 +24,15 @@ DEBUG = True
 PORT = 8000
 HOST = '0.0.0.0'
 
+# Allows CORS
+@app.after_request
+def after_request(response):
+  response.headers.add('Access-Control-Allow-Origin', 'http://localhost:8001')
+  response.headers.add('Access-Control-Allow-Credentials', 'true')
+  response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,X-Requested-With')
+  response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+  return response
+
 # routing for basic pages (pass routing onto the Angular app)
 @app.route('/')
 def index(**kwargs):
@@ -103,6 +112,9 @@ def get_results(uuid):
 	# Parry down list to get unique ballots cast
 	unique_ballots = {v.vote_id:v for v in ballot_votes}.values()
 	total_ballots_cast = len(unique_ballots)
+
+	if total_ballots_cast == 0:
+		return jsonify(ballot=ballot.serialize, results_by_round=[], total_ballots_cast=total_ballots_cast)
 
 	# Get votes into right structure then do vote counting
 	votes = _getVotesList(ballot_votes)

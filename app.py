@@ -43,7 +43,7 @@ def create_ballot():
 		new_options = [];
 
 		# make ballot and save
-		ballot = models.Ballot(name=data['name'], description=data['description'])
+		ballot = models.Ballot(name=data['name'], description=data.get('description', ''))
 		addAndCommit(ballot)
 
 		# make options and save

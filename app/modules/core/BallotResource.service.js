@@ -12,7 +12,8 @@ angular.module('altVote')
 		}
 
 		function createBallot(ballot) {
-			return $http.post('/api/create_ballot', 
+			console.log('ballot', ballot);
+			return $http.post(endpoints.ballot.createBallot, 
 				{		
 					name: ballot.name,
 					description: ballot.description,
@@ -24,14 +25,14 @@ angular.module('altVote')
 		}
 
 		function getBallot(uuid) {
-			return $http.get('/api/get_ballot/' + uuid)
+			return $http.get(sprintf(endpoints.ballot.getByUUID, uuid))
 				.then(function(resp){
 					return resp.data;
 				});
 		}
 
 		function getAllBallots() {
-			return $http.get('/api/get_all_ballots')
+			return $http.get(endpoints.ballot.getAll)
 				.then(function(resp){
 					return resp.data.ballots;
 				});
@@ -39,7 +40,7 @@ angular.module('altVote')
 
 		function castVote(raw_ranked_options) {
 			var ranked_options = _.map(raw_ranked_options, function(val) { return val; });
-			return $http.post('/api/cast_vote',
+			return $http.post(endpoints.ballot.castVote,
 				{
 					ranked_options: ranked_options
 				})
@@ -49,7 +50,7 @@ angular.module('altVote')
 		}
 
 		function getResults(ballot_uuid) {
-			return $http.get('/api/get_results/' + ballot_uuid)
+			return $http.get(sprintf(endpoints.ballot.getResults, ballot_uuid))
 				.then(function(resp) {
 					return resp.data;
 				});

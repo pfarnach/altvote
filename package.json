@@ -21,6 +21,7 @@
     "gulp-concat": "^2.6.0",
     "gulp-sass": "^2.2.0",
     "lodash": "3.10.1",
+    "ng-tags-input": "^3.0.0",
     "sprintf-js": "^1.0.3"
   }
 }

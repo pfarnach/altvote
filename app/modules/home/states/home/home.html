@@ -1,11 +1,36 @@
 <div>
-	<h1>Welcome to the Alternative Vote maker</h1>
-	<h3>Alternative voting is a way to vote where each voter is able to rank their choices, as opposed to the "first past the poll" system we have in the U.S.</h3>
-	<button ng-click="openCreateModal()">Make a Ballot</button>
+	<h1>VoteGoat</h1>
 
-	<div ng-repeat="ballot in ballots" style="margin-bottom:10px;">
-		<div>Name: <a ui-sref='vote({uuid: ballot.uuid})'>{{ ballot.name }}</a></div>
-		<div>Description: {{ ballot.description }}</div>
-		<div>Created on: {{ ballot.creation_date * 1000 | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>
+	<h3>VoteGoat is a simple tool to help you make ranked choice ballots that anyone can vote on</h3>
+
+	<h5>What's a ranked choice ballot? (aka alternative vote)</h5>
+
+	<div>The quick and dirty:
+		<ul>
+			<li>Instead of only choosing 1 candidate, you get to rank your choices -- that's right, more choices! This eliminates the <a href="https://en.wikipedia.org/wiki/Spoiler_effect" target="_blank">Spoiler Effect</a></li>
+			<li>To win, a candidate has to get more than 50% of the vote (unlike the <a href="https://en.wikipedia.org/wiki/First-past-the-post_voting" target="_blank">First Past the Post</a> system most elections use)</li>
+			<li>If there's no majority after the first round of counting, the last place candidate(s) get eliminted and their votes get redistributed to their votes' second choices</li>
+		</ul>
+	</div>
+
+	<div>
+		<h5>Here's a quick video that explains it more:</h5>
+		<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/3Y3jE3B8HsE" frameborder="0" allowfullscreen></iframe>
+	</div>
+
+	<div style="margin-top: 20px;">
+		<button ng-click="showCreateBallot = true" ng-hide="showCreateBallot">Make a Ballot</button>
+	</div>
+
+	<!-- Create ballot form -->
+	<create-ballot ng-show="showCreateBallot"></create-ballot>
+
+	<!-- All ballots -->
+	<div style="margin-top: 40px;">
+		<div ng-repeat="ballot in ballots" style="margin-bottom:10px;">
+			<div>Name: <a ui-sref='vote({uuid: ballot.uuid})'>{{ ballot.name }}</a></div>
+			<div>Description: {{ ballot.description }}</div>
+			<div>Created on: {{ ballot.creation_date * 1000 | date:'yyyy-MM-dd HH:mm:ss'}}</div>
+		</div>
 	</div>
 </div>

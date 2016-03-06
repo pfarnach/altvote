@@ -5,7 +5,8 @@ angular.module('altVote', [
 	'alt-vote-vote',
 	'ui.router',
 	'ui.bootstrap',
-	'ngCookies'
+	'ngCookies',
+	'ngTagsInput'
 	])
 
 	.config(function($stateProvider, $httpProvider, $urlRouterProvider) {

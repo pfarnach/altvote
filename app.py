@@ -7,20 +7,18 @@ from sqlalchemy import create_engine
 from copy import deepcopy
 import uuid
 import os
-import keys
-import CountUtils
-from VoteUtils import VoteUtils
+
+from server.CountUtils import CountUtils
+from server.VoteUtils import VoteUtils
 
 base_dir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__, static_url_path='/')
-app.secret_key = keys.secret_key
-app.config.from_pyfile('config.py')
+app.config.from_object('server.config.DebugConfiguration')
 
 db = SQLAlchemy(app)
 
 import models
 
-DEBUG = True
 PORT = 8000
 HOST = '0.0.0.0'
 
@@ -185,4 +183,4 @@ def errorResponse(message = 'Invalid request', status_code = 400):
 
 # To get the show on the road
 if __name__ == '__main__':
-	app.run(debug=DEBUG, port=PORT, host=HOST)
+	app.run(port=PORT, host=HOST)

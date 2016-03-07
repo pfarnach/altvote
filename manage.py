@@ -6,7 +6,7 @@ from flask.ext.migrate import Migrate, MigrateCommand
 from app import db, app
 
 app = Flask(__name__)
-app.config.from_pyfile('config.py')
+app.config.from_object('config.DebugConfiguration')
 
 migrate = Migrate(app, db)
 manager = Manager(app)

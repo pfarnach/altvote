@@ -1,6 +1,5 @@
-keys.py
-config.py
-*.pyc
+server/keys.py
+**/*.pyc
 ENV/
 .DS_Store
 node_modules/

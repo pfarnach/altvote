@@ -36,8 +36,8 @@
 	<div ng-repeat="resultRound in resultsByRound">
 		<div>Round #{{$index + 1}}</div>
 		<div ng-repeat="result in resultRound">
-			<span>{{ result.name }} - {{ result.percent_vote * 100 | number : 2 }}%</span>
-			<span ng-show="result.isWinner">-- Winner</span>
+			<span>{{ result.name }}: {{ result.percent_vote === 0 ? 0 : (result.percent_vote * 100 | number : 1) }}%</span>
+			<span ng-show="result.isWinner"><< Winner</span>
 		</div>
 		<div>---------------</div>
 	</div>

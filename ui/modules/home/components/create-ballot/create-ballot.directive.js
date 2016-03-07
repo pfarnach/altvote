@@ -5,7 +5,7 @@ angular.module('alt-vote-home')
 
 		return {
 			restrict: 'E',
-			templateUrl: 'app/modules/home/components/create-ballot/create-ballot.partial.html',
+			templateUrl: 'ui/modules/home/components/create-ballot/create-ballot.partial.html',
 			link: link
 		};
 

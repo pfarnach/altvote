@@ -15,6 +15,7 @@
 	<div ng-repeat="option in options">
 		<div>
 			<select
+				ng-init="selected[$index].rank = availableRanks[0]"
 				ng-model="selected[$index].rank"
 				ng-options="rank as rank for rank in availableRanks">
 			</select>
@@ -38,6 +39,7 @@
 		<div ng-repeat="result in resultRound">
 			<span>{{ result.name }}: {{ result.percent_vote === 0 ? 0 : (result.percent_vote * 100 | number : 1) }}%</span>
 			<span ng-show="result.isWinner"><< Winner</span>
+			<span ng-show="result.isEliminated"><< Eliminated</span>
 		</div>
 		<div>---------------</div>
 	</div>

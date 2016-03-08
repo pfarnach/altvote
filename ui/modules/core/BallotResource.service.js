@@ -12,7 +12,6 @@ angular.module('altVote')
 		}
 
 		function createBallot(ballot) {
-			console.log('ballot', ballot);
 			return $http.post(endpoints.ballot.createBallot, 
 				{		
 					name: ballot.name,
@@ -38,12 +37,8 @@ angular.module('altVote')
 				});
 		}
 
-		function castVote(raw_ranked_options) {
-			var ranked_options = _.map(raw_ranked_options, function(val) { return val; });
-			return $http.post(endpoints.ballot.castVote,
-				{
-					ranked_options: ranked_options
-				})
+		function castVote(ranked_options) {
+			return $http.post(endpoints.ballot.castVote, { ranked_options: ranked_options })
 				.then(function(resp) {
 					return resp.data;
 				});

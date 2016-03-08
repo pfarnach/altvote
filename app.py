@@ -141,15 +141,22 @@ def _getResultsWithOptions(results, ballot_id):
 	final_round_results = results[-1]
 	winning_perc = max(final_round_results.values())
 
+	final_round_index = len(results) - 1
+
 	# Get all relevants options
 	options_unserialized = db.session.query(models.BallotOption).filter(models.BallotOption.ballot_id == ballot_id)
 	options_serialized = [x.serialize for x in options_unserialized]
 
 	results_by_round = []
 
-	# Basically appending percentages to each option for each round
+	# For each candidate in each round, mark if they're a winner, elminated and what vote perc was
 	for i, r in enumerate(results):
 		options = deepcopy(options_serialized)
+
+		if min(r.values()) != winning_perc:
+			elim_perc = min(r.values())
+		else:
+			elim_perc = 0
 
 		for candidate_id, perc_vote in r.iteritems():
 			for option in options:
@@ -157,14 +164,21 @@ def _getResultsWithOptions(results, ballot_id):
 					option['percent_vote'] = perc_vote
 
 					# Will only have winner in last round
-					if (perc_vote == winning_perc) and (i == len(results) - 1):
+					if (perc_vote == winning_perc) and (i == final_round_index):
 						option['isWinner'] = True
 					else:
 						option['isWinner'] = False
 
+					# Mark as eliminated
+					if (perc_vote == elim_perc):
+						option['isEliminated'] = True
+					else:
+						option['isEliminated'] = False
+
 				elif not 'percent_vote' in option:
 					option['percent_vote'] = 0
 					option['isWinner'] = False
+					option['isEliminated'] = True
 
 		results_by_round.append(options)
 

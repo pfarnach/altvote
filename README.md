@@ -5,7 +5,15 @@ App meant to allow client to create a ranked choice election, cast ranked ballot
 
 ### Setup
 - Get Python dependencies: `pip install -r requirements.txt`
-- Set up postgres locally and create database called "vote"
-- Create `config.py` in root that has this `SQLALCHEMY_DATABASE_URI = "postgresql://username:password@localhost/vote"` with info filled in
+- Set up postgres db locally called "vote"
+- Create `keys.py` in server dictory that looks something like this:
+
+```
+SECRET_KEY = 'yoursecretstringhere'
+DB_URI = 'postgresql://username:password@localhost/vote'
+DB_URI_TESTS = "postgresql://username:password@localhost/vote_tests"
+```
+
 - Get front-end dependencies with `npm install`
-- Run server locally with `python app.py` which will run on `localhost:8000`
+- Run server locally with `python run.py` which will run on `localhost:8000`
+- If you want to run gulp (with browersync and sass compiling), run `app.py` then do `gulp serve` which will run on `localhost:8001`

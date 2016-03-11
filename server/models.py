@@ -1,5 +1,5 @@
-import datetime
 import uuid
+from datetime import datetime
 
 from app import db
 
@@ -8,7 +8,7 @@ class Ballot(db.Model):
 	id = db.Column('id', db.Integer, primary_key=True)
 	uuid = db.Column('uuid', db.String, default=uuid.uuid4)
 	status = db.Column('status', db.String, default='ACTIVE')
-	creation_date = db.Column('creation_date', db.Integer, default=int(datetime.datetime.utcnow().strftime('%s')))
+	creation_date = db.Column('creation_date', db.Integer, default=int(datetime.utcnow().strftime('%s')))
 	name = db.Column('name', db.String, nullable=False)
 	description = db.Column('description', db.String)
 	ballot_options = db.relationship("BallotOption")
@@ -48,7 +48,7 @@ class BallotVote(db.Model):
 	ballot_id = db.Column('ballot_id', db.Integer, nullable=False)
 	vote_id = db.Column('uuid', db.String, nullable=False)
 	ballot_option_id = db.Column('ballot_option', db.Integer, db.ForeignKey('ballot_option.id'), nullable=False)
-	creation_date = db.Column('creation_date', db.Integer, default=int(datetime.datetime.utcnow().strftime('%s')))
+	creation_date = db.Column('creation_date', db.Integer, default=int(datetime.utcnow().strftime('%s')))
 	rank = db.Column('rank', db.Integer, nullable=False)
 	db.UniqueConstraint('ballot_option_id', 'id')
 

@@ -6,7 +6,7 @@ App meant to allow client to create a ranked choice election, cast ranked ballot
 ### Setup
 - Get Python dependencies: `pip install -r requirements.txt`
 - Set up postgres db locally called "vote"
-- Create `keys.py` in server dictory that looks something like this:
+- Create `keys.py` in the server directory that looks something like this:
 
 ```
 SECRET_KEY = 'yoursecretstringhere'

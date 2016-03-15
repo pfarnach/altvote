@@ -19,19 +19,25 @@
 <body ng-app="altVote">
   <div class="header-bar">
     <div class="container">
-      <h1 class="pull-left">AltVote</h1>
-      <div class="pull-right">
-        <ul class="navigation-menu">
-          <li>Home</li>
-          <li>FAQ</li>
-          <li>Make a Ballot</li>
-        </ul>
+      <div layout="row">
+        <div class="flex">
+          <a href="index.html">
+            <h1 class="pull-left">AltVote</h1>
+          </a>
+        </div>
+        <div class="flex">
+          <ul class="navigation-menu">
+            <li>Home</li>
+            <li>FAQ</li>
+            <li>Make a Ballot</li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
 
-	<div class="container content">
-		<div ui-view></div>
+	<div class="content">
+		<div ui-view class="container"></div>
 	</div>
 
 	<!-- Dependencies -->

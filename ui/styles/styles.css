@@ -1,3 +1,8 @@
+html,
+body {
+  height: 100%;
+}
+
 .embed-container {
 	position: relative;
 	padding-bottom: 56.25%;
@@ -29,9 +34,26 @@ h1 {
   line-height: 50px;
 }
 
+h3 {
+  font-size: 28px;
+  color: #6593A0;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+h4 {
+  font-size: 22px;
+  color: #fff;
+}
+
+p {
+  font-size: 15px;
+}
+
 .navigation-menu {
   list-style: none;
   line-height: 50px;
+  text-align: right;
 }
 
 .navigation-menu li {
@@ -42,26 +64,56 @@ h1 {
 }
 
 .content {
+  width: 100%;
   height: calc(100% - 50px);
   overflow-y: auto;
 }
 
 .hero-container {
-  background: #6593A0;
   margin: 0;
   padding: 5px 15px;
 }
 
 .create-ballot {
   box-shadow: 0 2px 2px rgba(0, 0, 0, .2);
-  padding: 0 15px;
+  margin-top: 25px;
 }
 
 .create-left {
-  background: #0A2A3F;
-  padding: 15px;
+  background: #6593A0;
+  padding: 15px 25px;
+  color: #fff;
+}
+
+.create-left md-input-container {
+  margin: 18px 0 0;
+}
+
+.create-left md-input-container .md-input,
+.create-left md-input-container:not(.md-input-invalid).md-input-focused .md-input {
+  color: #fff;
+  border-color: rgba(255, 255, 255, .8);
+}
+
+.create-left md-input-container label,
+.create-left md-input-container:not(.md-input-invalid).md-input-focused label,
+.create-left md-input-container:not(.md-input-invalid).md-input-has-value label {
+  color: rgba(255, 255, 255, .8);
+}
+
+.create-right {
+  padding: 15px 25px;
 }
 
 .white-label {
   color: #fff;
+}
+
+.table-head {
+  color: #b8b8b8;
+  font-weight: 500;
+}
+
+.error {
+  color: red;
 }

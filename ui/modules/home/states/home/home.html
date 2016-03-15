@@ -1,40 +1,36 @@
-<div>
-	<h1>AltVote</h1>
+<div class="hero-container" layout="row">
+  <div flex="60">
+  	<h3>AltVote is a simple platform to help you make ranked choice ballots that anyone can vote on</h3>
+  	<!-- <h4>What's a ranked choice ballot? (aka alternative vote)</h4> -->
+  	<div>
+  		<ul>
+  			<li>Instead of only choosing one candidate, you get to rank your choices. This gets rid of the <a href="https://en.wikipedia.org/wiki/Spoiler_effect" target="_blank">Spoiler Effect</a></li>
+  			<li>To win, a candidate has to get more than 50% of the vote (unlike the <a href="https://en.wikipedia.org/wiki/First-past-the-post_voting" target="_blank">First Past the Post</a> system)</li>
+  			<li>If no candidate has over 50% of the vote after the first round, the last place candidate gets eliminated -- whoever voted for them gets their vote redistributed to their second choice.</li>
+  		</ul>
+  	</div>
+  </div>
+  <div flex flex-offset="10">
+    <div class="embed-container">
+      <iframe src="https://player.vimeo.com/video/112760841" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
 
-	<h3>AltVote is a simple platform to help you make ranked choice ballots that anyone can vote on</h3>
+<!-- Create ballot form -->
+<create-ballot style="margin-top: 10px; display: block;"></create-ballot>
 
-	<h5>What's a ranked choice ballot? (aka alternative vote)</h5>
-
-	<div>The quick and dirty:
-		<ul>
-			<li>Instead of only choosing one candidate, you get to rank your choices. This gets rid of the <a href="https://en.wikipedia.org/wiki/Spoiler_effect" target="_blank">Spoiler Effect</a></li>
-			<li>To win, a candidate has to get more than 50% of the vote (unlike the <a href="https://en.wikipedia.org/wiki/First-past-the-post_voting" target="_blank">First Past the Post</a> system)</li>
-			<li>If no candidate has over 50% of the vote after the first round, the last place candidate gets eliminated -- whoever voted for them gets their vote redistributed to their second choice.</li>
-		</ul>
-	</div>
-
-	<div>
-		<h5>Here's a quick video that explains it more:</h5>
-		<div style="max-width: 650px;">
-			<div class="embed-container">
-				<iframe src="https://player.vimeo.com/video/112760841" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-			</div>
-		</div>
-	</div>
-
-	<div style="margin-top: 20px;">
-		<button ng-click="showCreateBallot = true" ng-hide="showCreateBallot">Make a Ballot</button>
-	</div>
-
-	<!-- Create ballot form -->
-	<create-ballot ng-show="showCreateBallot"></create-ballot>
-
-	<!-- All ballots -->
-	<div style="margin-top: 40px;">
-		<div ng-repeat="ballot in ballots" style="margin-bottom:10px;">
-			<div>Name: <a ui-sref='vote({uuid: ballot.uuid})'>{{ ballot.name }}</a></div>
-			<div>Description: {{ ballot.description }}</div>
-			<div>Created on: {{ ballot.creation_date * 1000 | date:'yyyy-MM-dd HH:mm:ss'}}</div>
-		</div>
+<!-- All ballots -->
+<div style="margin-top: 40px; background: #eee; padding: 15px;" layout="row">
+	<div ng-repeat="ballot in ballots" style="margin-bottom:10px;" flex="50">
+		<div style="font-weight:bold;">
+      <a ui-sref='vote({uuid: ballot.uuid})'>{{ ballot.name }}</a>
+    </div>
+		<div style="margin-bottom: 3px;">
+      {{ ballot.description }}
+    </div>
+		<div style="font-size: 10px;">
+      Created on: {{ ballot.creation_date * 1000 | date:'yyyy-MM-dd HH:mm:ss'}}
+    </div>
 	</div>
 </div>

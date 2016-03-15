@@ -43,12 +43,12 @@ def create_ballot():
 
 		# make ballot and save
 		ballot = models.Ballot(name=data['name'], description=data.get('description', ''))
-		db.session.add()
+		db.session.add(ballot)
 		db.session.commit()
 
 		# make options and save
 		for option in options:
-			option_to_add = models.BallotOption(name=option['text'], ballot_id=ballot.id)
+			option_to_add = models.BallotOption(name=option, ballot_id=ballot.id)
 			new_options.append(option_to_add)
 			db.session.add(option_to_add)
 

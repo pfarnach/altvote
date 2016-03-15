@@ -1,29 +1,40 @@
-<div>
-	<div>
-		<!-- Name -->
-		<div>Name
-			<input type="text" ng-model="ballot.name" placeholder="Ballot name">
-		</div>
+<div class="create-ballot">
+  <div layout="row">
+  	<div flex="33" class="create-left">
+      <div layout-gt-xs="row">
+        <!-- Name -->
+        <md-input-container flex-gt-xs>
+          <label>Name</label>
+          <input type="text" ng-model="ballot.name">
+        </md-input-container>
+      </div>
 
-		<!-- Description -->
-		<div>Description
-			<input type="text" ng-model="ballot.description" placeholder="Ballot description">
-		</div>
+      <div layout-gt-xs="row">
+        <!-- Description -->
+        <md-input-container flex-gt-xs>
+          <label>Description</label>
+          <textarea type="text" ng-model="ballot.description">
+        </textarea>
+      </div>
+    </div>
 
-		<!-- Ballot options -->
-		<div>
-			<div>Ballot Choices</div>
-			<tags-input
-				ng-model="ballot.options"
-				min-length="1"
-				min-tags="2"
-				replace-spaces-with-dashes="false">
-			</tags-input>
-		</div>
-	</div>
+    <div flex class="create-right">
+  		<!-- Ballot options -->
+      <md-chips ng-model="ballot.options"
+                min-length="1"
+                min-tags="2"
+                replace-spaces-with-dashes="false"
+                placeholder="Enter Ballot Choices"></md-chips>
 
-	<!-- Submit button -->
-	<button ng-click="createBallot(ballot)">Create Ballot</button>
+      <!-- Submit button -->
+      <div class="pull-right">
+        <md-button ng-click="createBallot(ballot)"
+                   class="md-raised md-primary">
+          Create Ballot
+        </md-button>
+      </div>
+  	</div>
+  </div>
 
 	<!-- Form error message -->
 	<div ng-show="error.show">{{ error.msg }}</div>

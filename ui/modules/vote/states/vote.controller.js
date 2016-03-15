@@ -28,9 +28,21 @@ angular.module('alt-vote-vote')
     	$scope.form.submitted = true;
     	$scope.form.valid = true;
 
-    	var raw_answers = _($scope.selected)
+      var selected = _($scope.selected)
+        .filter(function(option) {
+          return option.rank;
+        })
+        .map(function(option) {
+          return {
+            rank: _.parseInt(option.rank),
+            ballot_id: option.ballot_id,
+            id: option.id
+          };
+        })
+        .value()
+
+    	var raw_answers = _(selected)
 				.map('rank')
-				.compact()
         .sort()
 		    .value();
 
@@ -45,7 +57,7 @@ angular.module('alt-vote-vote')
     	}
 
     	if ($scope.form.valid) {
-    		BallotResource.castVote(_removeNonRanks($scope.selected));
+    		BallotResource.castVote(selected);
 	    	// Temporary solution: set cookie to see if they've done poll already
 		    // $cookies.put(ballot.uuid, 'answered');
 		    // checkCookie();
@@ -65,12 +77,6 @@ angular.module('alt-vote-vote')
     		$scope.form.message = "You can't skip ranks";
     		$scope.form.valid = false;
     	}
-    }
-
-    function _removeNonRanks(options) {
-      return _.filter(options, function(option) {
-        return option.rank;
-      });
     }
 
     // Fetch results of ballot

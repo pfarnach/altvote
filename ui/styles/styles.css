@@ -6,10 +6,62 @@
 	max-width: 100%;
 }
 
-.embed-container iframe { 
+.embed-container iframe {
 	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
+}
+
+.header-bar {
+  position: relative;
+  z-index: 1;
+  background: #0A2A3F;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, .2);
+  height: 50px;
+}
+
+h1 {
+  margin: 0;
+  color: #fff;
+  font-size: 25px;
+  line-height: 50px;
+}
+
+.navigation-menu {
+  list-style: none;
+  line-height: 50px;
+}
+
+.navigation-menu li {
+  display: inline-block;
+  margin-left: 10px;
+  color: #fff;
+  font-weight: bold;
+}
+
+.content {
+  height: calc(100% - 50px);
+  overflow-y: auto;
+}
+
+.hero-container {
+  background: #6593A0;
+  margin: 0;
+  padding: 5px 15px;
+}
+
+.create-ballot {
+  box-shadow: 0 2px 2px rgba(0, 0, 0, .2);
+  padding: 0 15px;
+}
+
+.create-left {
+  background: #0A2A3F;
+  padding: 15px;
+}
+
+.white-label {
+  color: #fff;
 }

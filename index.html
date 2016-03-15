@@ -16,8 +16,20 @@
 	<link rel="stylesheet" href="ui/styles/styles.css">
 </head>
 <body ng-app="altVote">
+  <div class="header-bar">
+    <div class="container">
+      <h1 class="pull-left">AltVote</h1>
+      <div class="pull-right">
+        <ul class="navigation-menu">
+          <li>Home</li>
+          <li>FAQ</li>
+          <li>Make a Ballot</li>
+        </ul>
+      </div>
+    </div>
+  </div>
 
-	<div class="container">
+	<div class="container content">
 		<div ui-view></div>
 	</div>
 
@@ -47,6 +59,6 @@
 	<!-- Vote Module -->
 	<script src="ui/modules/vote/vote.module.js"></script>
 	<script src="ui/modules/vote/states/vote.controller.js"></script>
-	
+
 </body>
 </html>

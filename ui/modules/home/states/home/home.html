@@ -1,6 +1,4 @@
-<div>
-	<h1>AltVote</h1>
-
+<div class="hero-container">
 	<h3>AltVote is a simple platform to help you make ranked choice ballots that anyone can vote on</h3>
 
 	<h5>What's a ranked choice ballot? (aka alternative vote)</h5>
@@ -12,29 +10,29 @@
 			<li>If no candidate has over 50% of the vote after the first round, the last place candidate gets eliminated -- whoever voted for them gets their vote redistributed to their second choice.</li>
 		</ul>
 	</div>
+</div>
 
-	<div>
-		<h5>Here's a quick video that explains it more:</h5>
-		<div style="max-width: 650px;">
-			<div class="embed-container">
-				<iframe src="https://player.vimeo.com/video/112760841" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-			</div>
+<div>
+	<h5>Here's a quick video that explains it more:</h5>
+	<div style="max-width: 650px;">
+		<div class="embed-container">
+			<iframe src="https://player.vimeo.com/video/112760841" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 		</div>
 	</div>
+</div>
 
-	<div style="margin-top: 20px;">
-		<button ng-click="showCreateBallot = true" ng-hide="showCreateBallot">Make a Ballot</button>
-	</div>
+<!-- <div style="margin-top: 20px;">
+	<button ng-click="showCreateBallot = true" ng-hide="showCreateBallot">Make a Ballot</button>
+</div> -->
 
-	<!-- Create ballot form -->
-	<create-ballot ng-show="showCreateBallot"></create-ballot>
+<!-- Create ballot form -->
+<create-ballot style="margin-top: 10px; display: block;"></create-ballot>
 
-	<!-- All ballots -->
-	<div style="margin-top: 40px;">
-		<div ng-repeat="ballot in ballots" style="margin-bottom:10px;">
-			<div>Name: <a ui-sref='vote({uuid: ballot.uuid})'>{{ ballot.name }}</a></div>
-			<div>Description: {{ ballot.description }}</div>
-			<div>Created on: {{ ballot.creation_date * 1000 | date:'yyyy-MM-dd HH:mm:ss'}}</div>
-		</div>
+<!-- All ballots -->
+<div style="margin-top: 40px;">
+	<div ng-repeat="ballot in ballots" style="margin-bottom:10px;">
+		<div>Name: <a ui-sref='vote({uuid: ballot.uuid})'>{{ ballot.name }}</a></div>
+		<div>Description: {{ ballot.description }}</div>
+		<div>Created on: {{ ballot.creation_date * 1000 | date:'yyyy-MM-dd HH:mm:ss'}}</div>
 	</div>
 </div>

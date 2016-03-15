@@ -14,11 +14,12 @@
 	<div>Rank your options!</div>
 	<div ng-repeat="option in options">
 		<div>
-			<select
+			<md-select
 				ng-init="selected[$index].rank = availableRanks[0]"
 				ng-model="selected[$index].rank"
-				ng-options="rank as rank for rank in availableRanks">
-			</select>
+				aria-label="candidate selector">
+				<md-option ng-repeat="rank in availableRanks">{{ rank }}</md-option>
+			</md-select>
 			<span>{{ option.name }}</span>
 		</div>
 	</div>

@@ -75,8 +75,10 @@ p {
 }
 
 .create-ballot {
-  box-shadow: 0 2px 2px rgba(0, 0, 0, .2);
-  margin-top: 25px;
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,.2),
+              0 1px 1px 0 rgba(0,0,0,.14),
+              0 2px 1px -1px rgba(0,0,0,.12);
+  margin: 25px 0;
 }
 
 .create-left {
@@ -116,4 +118,28 @@ p {
 
 .error {
   color: red;
+}
+
+.eliminated {
+  background: #FBE0E0;
+}
+
+.winner {
+  background: green;
+  font-weight: 500;
+  color: #fff;
+}
+
+.result-row {
+  padding: 0 15px 15px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #bdbdbd;
+}
+
+.result-row:last-child {
+  border: none;
+}
+
+.result-row > div {
+  padding: 5px 10px;
 }

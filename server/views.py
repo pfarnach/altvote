@@ -3,16 +3,18 @@ from __future__ import division
 from copy import deepcopy
 import uuid
 
-from flask import Flask, Blueprint, jsonify, make_response, send_from_directory, request, abort, current_app
+from flask import (Flask, Blueprint, jsonify, make_response, send_from_directory,
+	request, abort, render_template)
 
 from app import db
 from server import models
+from server.email import send_email
 
 from server.utils.countUtils import CountUtils
 from server.utils.voteUtils import VoteUtils
 
 
-base_view = Blueprint('base', __name__)
+base_view = Blueprint('base', __name__, template_folder='./templates')
 
 # Allows CORS
 @base_view.after_request
@@ -51,6 +53,14 @@ def create_ballot():
 			option_to_add = models.BallotOption(name=option, ballot_id=ballot.id)
 			new_options.append(option_to_add)
 			db.session.add(option_to_add)
+
+		# Send email with link to ballot if they provided an email
+		if data.get('email'):
+			send_email('[AltVote] Your New Ballot',
+				[data.get('email')],
+				render_template('email_ballot_create.txt', ballot=ballot),
+				render_template('email_ballot_create.html', ballot=ballot)
+			)
 
 		# TODO: is this necessary?
 		db.session.commit()

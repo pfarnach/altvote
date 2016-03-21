@@ -1,0 +1,8 @@
+Hey there!
+
+Just for your records, here's the link the ballot to you just created on AltVote.io!  Enjoy and let us know if you have any feedback!
+
+http://localhost:8000/#/ballot/{{ ballot.uuid }}
+
+Best,
+The AltVote Team

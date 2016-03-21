@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('alt-vote-vote')
-	.controller('VoteController', function($scope, ballot, BallotResource, BallotUtils) {
+	.controller('VoteController', function($scope, ballot, BallotResource, BallotUtils, $cookies, $mdToast) {
     
     $scope.ballot = ballot.ballot;
     $scope.options = ballot.options;
@@ -59,8 +59,8 @@ angular.module('alt-vote-vote')
     	if ($scope.form.valid) {
     		BallotResource.castVote(selected);
 	    	// Temporary solution: set cookie to see if they've done poll already
-		    // $cookies.put(ballot.uuid, 'answered');
-		    // checkCookie();
+		    $cookies.put($scope.ballot.uuid, 'answered');
+		    checkCookie();
     	}
     };
 
@@ -79,20 +79,36 @@ angular.module('alt-vote-vote')
     	}
     }
 
-    // Fetch results of ballot
     $scope.getResults = function() {
+      getResults();
+      $scope.readOnly = true;    
+    };
+
+    // Fetch results of ballot
+    function getResults() {
       BallotResource.getResults($scope.ballot.uuid)
         .then(function(resp) {
           $scope.resultsByRound = BallotUtils.removePrevElimCands(resp.results_by_round);
           $scope.totalBallotsCast = resp.total_ballots_cast;
+
+          // Success
+          // $mdToast.show(
+          //   $mdToast.simple()
+          //     .textContent('Vote successfully cast!')
+          //     .position('top right')
+          //     .hideDelay(3000)
+          // );
         });
     };
 
     function checkCookie() {
-    // 	if ($cookies.get(ballot.uuid)) {
-				// $scope.readOnly = true;
-    // 	}
+    	if ($cookies.get($scope.ballot.uuid)) {
+				$scope.readOnly = true;
+        getResults();
+    	}
     }
 
+    // On load, check if question is already answered
     checkCookie();
+
 	});

@@ -11,6 +11,8 @@ angular.module('alt-vote-home')
 
 		function link(scope) {
 
+			scope.submitted = false;
+
 			scope.ballot = {
 				options: []
 			};
@@ -34,11 +36,13 @@ angular.module('alt-vote-home')
 					scope.error.msg = 'You have to enter a name';
 					scope.error.show = true;
 					return;
-				} else if (!ballot.options.length) {
+				} else if (ballot.options.length < 2 || !ballot.options.length) {
 					scope.error.msg = 'You have to enter at least two ballot options';
 					scope.error.show = true;
 					return;
 				}
+
+				scope.submitted = true;
 
 				BallotResource.createBallot(ballot)
 					.then(function(resp) {

@@ -3,12 +3,6 @@
     <div flex="33" class="create-left">
         <h4>{{ ballot.name }}</h4>
         <p>{{ ballot.description }}</p>
-        <div ng-if="readOnly">
-            Options:
-            <div ng-repeat="option in options">
-                <span>{{ option.name }}: {{ option.vote_count }}</span>
-            </div>
-        </div>
     </div>
     <div flex class="create-right">
         <div ng-if="!readOnly">
@@ -40,7 +34,7 @@
     <div flex="33" class="create-left">
         <h4>{{ ballot.name }}</h4>
         <p>{{ ballot.description }}</p>
-        <div>Total ballots cast: {{ totalBallotsCast }}</div>
+        <div>Ballots cast: {{ totalBallotsCast }}</div>
     </div>
     <div flex class="create-right">
         <div ng-repeat="resultRound in resultsByRound" class="result-row">

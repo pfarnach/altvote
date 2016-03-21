@@ -13,23 +13,31 @@
         <!-- Description -->
         <md-input-container flex-gt-xs>
           <label>Description</label>
-          <textarea type="text" ng-model="ballot.description">
+          <textarea type="text" placeholder="(optional)" ng-model="ballot.description">
         </textarea>
+      </div>
+
+      <div layout-gt-xs="row">
+        <!-- Email -->
+        <md-input-container flex-gt-xs>
+          <label>Email
+            <md-tooltip md-direction="top">
+              Will only be used to send you a link to your ballot for your records/to share
+            </md-tooltip>
+          </label>
+          <input type="email" placeholder="(optional)" ng-model="ballot.email">
       </div>
     </div>
 
     <div flex class="create-right">
   		<!-- Ballot options -->
-      <md-chips ng-model="ballot.options"
-                min-length="1"
-                min-tags="2"
-                replace-spaces-with-dashes="false"
-                placeholder="Enter Ballot Choices"></md-chips>
+      <md-chips ng-model="ballot.options" placeholder="Enter Ballot Choices"></md-chips>
 
       <!-- Submit button -->
       <div class="pull-right">
         <md-button ng-click="createBallot(ballot)"
-                   class="md-raised md-primary">
+                   class="md-raised md-primary"
+                   ng-disabled="submitted">
           Create Ballot
         </md-button>
       </div>

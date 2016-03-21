@@ -16,7 +16,8 @@ angular.module('altVote')
 				{		
 					name: ballot.name,
 					description: ballot.description,
-					options: ballot.options
+					options: ballot.options,
+					email: ballot.email
 				})
 				.then(function(resp) {
 					return resp.data;

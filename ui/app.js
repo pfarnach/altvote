@@ -6,7 +6,6 @@ angular.module('altVote', [
 	'ui.router',
 	'ui.bootstrap',
 	'ngCookies',
-	'ngTagsInput',
 	'ngMaterial'
 	])
 

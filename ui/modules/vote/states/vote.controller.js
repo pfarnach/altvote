@@ -5,6 +5,7 @@ angular.module('alt-vote-vote')
     
     $scope.ballot = ballot.ballot;
     $scope.options = ballot.options;
+    $scope.alreadyVoted = false;
     $scope.readOnly = false;
     $scope.form = {
     	valid: false,
@@ -81,7 +82,13 @@ angular.module('alt-vote-vote')
 
     $scope.getResults = function() {
       getResults();
-      $scope.readOnly = true;    
+      $scope.readOnly = true;
+    };
+
+    $scope.hideResults = function() {
+      console.log('got here');
+      console.log('$scope.readOnly', $scope.readOnly);
+      $scope.readOnly = false;
     };
 
     // Fetch results of ballot
@@ -103,7 +110,7 @@ angular.module('alt-vote-vote')
 
     function checkCookie() {
     	if ($cookies.get($scope.ballot.uuid)) {
-				$scope.readOnly = true;
+				$scope.alreadyVoted = true;
         getResults();
     	}
     }

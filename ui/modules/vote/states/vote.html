@@ -1,36 +1,36 @@
-<!-- <a ui-sref='home1'>Back to Home</a> -->
-<div class="create-ballot" layout="row" ng-if="!resultsByRound.length">
+<div class="create-ballot" layout="row" ng-show="!readOnly">
     <div flex="33" class="create-left">
         <h4>{{ ballot.name }}</h4>
         <p>{{ ballot.description }}</p>
     </div>
     <div flex class="create-right">
-        <div ng-if="!readOnly">
-            <div layout="row" class="table-head">
-              <div flex="15">Ranking</div>
-              <div flex flex-offset="5">Options</div>
-            </div>
-            <div ng-repeat="option in options" layout="row">
-                <md-select ng-init="selected[$index].rank = availableRanks[0]"
-                           ng-model="selected[$index].rank"
-                           aria-label="candidate selector"
-                           flex="15">
-                    <md-option ng-repeat="rank in availableRanks">{{ rank }}</md-option>
-                </md-select>
-                <div flex flex-offset="5" style="margin-top: 20px; margin-bottom: 26px;">{{ option.name }}</div>
-            </div>
-            <div class="pull-right">
-                <md-button ng-click="getResults()">Get results</md-button>
-                <md-button ng-click="validateAnswer()" class="md-raised md-primary">Answer</md-button>
-            </div>
-            <div ng-show="!form.valid && form.submitted" class="error">
-                {{ form.message }}
-            </div>
+        <div layout="row" class="table-head">
+          <div flex="15">Ranking</div>
+          <div flex flex-offset="5">Options</div>
+        </div>
+        <div ng-repeat="option in options" layout="row">
+            <md-select ng-init="selected[$index].rank = availableRanks[0]"
+                       ng-model="selected[$index].rank"
+                       aria-label="candidate selector"
+                       flex="15">
+                <md-option ng-repeat="rank in availableRanks">{{ rank }}</md-option>
+            </md-select>
+            <div flex flex-offset="5" style="margin-top: 20px; margin-bottom: 26px;">{{ option.name }}</div>
+        </div>
+        <div class="pull-right">
+            <md-button ng-click="getResults()">See Results</md-button>
+            <md-button ng-click="validateAnswer()" class="md-raised md-primary">
+                <span class="fa fa-check-square-o"></span>
+                Answer
+            </md-button>
+        </div>
+        <div ng-show="!form.valid && form.submitted" class="error">
+            {{ form.message }}
         </div>
     </div>
 </div>
 
-<div ng-if="resultsByRound.length" class="create-ballot" layout="row">
+<div ng-if="resultsByRound.length && readOnly" class="create-ballot" layout="row">
     <div flex="33" class="create-left">
         <h4>{{ ballot.name }}</h4>
         <p>{{ ballot.description }}</p>
@@ -38,12 +38,24 @@
     </div>
     <div flex class="create-right">
         <div ng-repeat="resultRound in resultsByRound" class="result-row">
-            <h5>Round #{{$index + 1}}</h5>
+            <h5>Round #{{ $index + 1 }}</h5>
             <div ng-repeat="result in resultRound" ng-class="{ 'eliminated': result.isEliminated, 'winner': result.isWinner }">
                 <span>{{ result.name }}: {{ result.percent_vote === 0 ? 0 : (result.percent_vote * 100 | number : 1) }}%</span>
-                <span ng-show="result.isWinner" class="pull-right">Winner</span>
-                <span ng-show="result.isEliminated" class="pull-right">Eliminated</span>
+                <span ng-show="result.isWinner" class="pull-right">
+                    <span class="fa fa-check-circle"></span>
+                    Winner
+                </span>
+                <span ng-show="result.isEliminated" class="pull-right">
+                    <span class="fa fa-times"></span>
+                    Eliminated
+                </span>
             </div>
+        </div>
+        <div class="pull-right" ng-hide="alreadyVoted">
+            <md-button ng-click="hideResults()">
+                <span class="fa fa-arrow-circle-o-left"></span>
+                Back to Vote
+            </md-button>
         </div>
     </div>
 </div>

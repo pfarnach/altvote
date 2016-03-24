@@ -2,7 +2,7 @@ function BallotUtils($http) {
 	
 	return {
 		removePrevElimCands: removePrevElimCands
-	}
+	};
 
 	// If a candidate is marked as eliminated, eliminate them from all future rounds
   function removePrevElimCands(resultsByRound) {

@@ -1,5 +1,4 @@
 function VoteController($scope, ballot, BallotResource, BallotUtils, $cookies, $mdToast) {
-  
   $scope.ballot = ballot.ballot;
   $scope.options = ballot.options;
   $scope.alreadyVoted = false;
@@ -27,7 +26,7 @@ function VoteController($scope, ballot, BallotResource, BallotUtils, $cookies, $
   	$scope.form.submitted = true;
   	$scope.form.valid = true;
 
-    var const = _($scope.selected)
+    const selected = _($scope.selected)
       .filter((option) => option.rank)
       .map((option) => {
         return {
@@ -36,7 +35,7 @@ function VoteController($scope, ballot, BallotResource, BallotUtils, $cookies, $
           id: option.id
         };
       })
-      .value()
+      .value();
 
   	const raw_answers = _(selected)
 			.map('rank')
@@ -44,12 +43,12 @@ function VoteController($scope, ballot, BallotResource, BallotUtils, $cookies, $
 	    .value();
 
   	if (!raw_answers.length) {
-			$scope.form.message = "You have to rank at least one option";
+			$scope.form.message = 'You have to rank at least one option';
 			$scope.form.valid = false;
   	} else if (_.isNumber(raw_answers[0]) && raw_answers[0] === 1) {
   		_checkNextVal(raw_answers, 0);
   	} else {
-  		$scope.form.message = "Ranking must start at 1";
+  		$scope.form.message = 'Ranking must start at 1';
   		$scope.form.valid = false;
   	}
 
@@ -80,10 +79,10 @@ function VoteController($scope, ballot, BallotResource, BallotUtils, $cookies, $
   	} else if (raw_answers[currentIdx] + 1 === raw_answers[currentIdx + 1]) {
   		_checkNextVal(raw_answers, ++currentIdx);
   	} else if (raw_answers[currentIdx] === raw_answers[currentIdx + 1]){
-  		$scope.form.message = "You can't have two of the same ranks";
+  		$scope.form.message = 'You can\'t have two of the same ranks';
   		$scope.form.valid = false;
   	} else {
-  		$scope.form.message = "You can't skip ranks";
+  		$scope.form.message = 'You can\'t skip ranks';
   		$scope.form.valid = false;
   	}
   }

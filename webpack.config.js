@@ -21,9 +21,8 @@ var webpackConfig = {
     vote: './modules/vote/vote.module.js',
   },
   
-  output: {
-    filename: '[name].bundle.js',
-    path: path.resolve('./dist')
+  externals: {
+    'angular': 'angular'
   },
 
   module: {
@@ -41,9 +40,10 @@ var webpackConfig = {
     ]
   },
 
-  externals: {
-    'angular': 'angular'
-  },
+  output: {
+    filename: '[name].bundle.js',
+    path: path.resolve('./ui/dist')
+  }
 
 };
 

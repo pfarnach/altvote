@@ -4,12 +4,13 @@ var reload 			  = browserSync.reload;
 var sass          = require('gulp-sass');
 var autoprefixer  = require('gulp-autoprefixer');
 var concat 			  = require('gulp-concat');
+var eslint        = require('gulp-eslint');
 var webpack       = require('webpack');
 var webpackConfig = require('./webpack.config');
 
 
 // watch files for changes and reload
-gulp.task('serve', ['sass', 'webpack'], function() {
+gulp.task('serve', ['sass', 'lint', 'webpack'], function() {
 	// Browsersync server
   browserSync({
   	notify: false,
@@ -33,6 +34,19 @@ gulp.task('sass', function() {
     .pipe(concat('styles.css'))
     .pipe(gulp.dest("app/styles"))
     .pipe(browserSync.stream());
+});
+
+const lintConfig = {
+  src: [
+    './ui/**/*.js',
+    '!./ui/dist/*.js'
+  ]
+};
+
+gulp.task('lint', function() {
+  return gulp.src(lintConfig.src)
+    .pipe(eslint())
+    .pipe(eslint.format());
 });
 
 gulp.task('webpack', function(callback) {

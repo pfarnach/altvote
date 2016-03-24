@@ -6,7 +6,7 @@ function BallotResource($http) {
 		getAllBallots: getAllBallots,
 		castVote: castVote,
 		getResults: getResults
-	}
+	};
 
 	function createBallot(ballot) {
 		return $http.post(endpoints.ballot.createBallot, 

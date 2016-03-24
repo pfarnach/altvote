@@ -4,3 +4,4 @@ ENV/
 .DS_Store
 node_modules/
 .idea
+ui/dist

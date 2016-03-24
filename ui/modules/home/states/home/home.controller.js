@@ -1,13 +1,12 @@
-'use strict';
+function HomeController($scope, $modal, $state, BallotResource) {
 
-angular.module('alt-vote-home')
-	.controller('HomeController', function($scope, $modal, $state, BallotResource) {
+  $scope.showCreateBallot = false;
 
-    $scope.showCreateBallot = false;
+  BallotResource.getAllBallots()
+    .then((resp) => {
+      $scope.ballots = resp;
+    });
 
-    BallotResource.getAllBallots()
-      .then(function(resp) {
-        $scope.ballots = resp;
-      });
+}
 
-	});
+export default HomeController;

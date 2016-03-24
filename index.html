@@ -21,7 +21,7 @@
     <div class="container">
       <div layout="row">
         <div class="flex">
-          <a href="index.html">
+          <a ui-sref="home1">
             <h1 class="pull-left"><span class="fa fa-check-square-o"></span>AltVote</h1>
           </a>
         </div>
@@ -45,7 +45,7 @@
 	<script src="node_modules/angular-aria/angular-aria.min.js"></script>
 	<script src="node_modules/angular-animate/angular-animate.min.js"></script>
 	<script src="node_modules/angular-material/angular-material.min.js"></script>
-	<script src="node_modules/lodash/index.js"></script>
+	<script src="node_modules/lodash/lodash.min.js"></script>
 	<script src="node_modules/angular-ui-router/release/angular-ui-router.js"></script>
 	<script src="node_modules/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 	<script src="node_modules/angular-cookies/angular-cookies.min.js"></script>
@@ -56,18 +56,10 @@
 	<script src="ui/config.js"></script>
 	<script src="ui/app.js"></script>
 
-	<!-- Core -->
-	<script src="ui/modules/core/BallotResource.service.js"></script>
-	<script src="ui/modules/core/BallotUtils.service.js"></script>
-
-	<!-- Home Module -->
-	<script src="ui/modules/home/home.module.js"></script>
-	<script src="ui/modules/home/states/home/home.controller.js"></script>
-	<script src="ui/modules/home/components/create-ballot/create-ballot.directive.js"></script>
-
-	<!-- Vote Module -->
-	<script src="ui/modules/vote/vote.module.js"></script>
-	<script src="ui/modules/vote/states/vote.controller.js"></script>
+	<!-- Webpacked modules -->
+	<script src="dist/core.bundle.js"></script>
+	<script src="dist/home.bundle.js"></script>
+	<script src="dist/vote.bundle.js"></script>
 
 </body>
 </html>

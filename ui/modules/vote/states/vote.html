@@ -1,4 +1,4 @@
-<div class="create-ballot" layout="row" ng-show="!readOnly">
+<div class="create-ballot" layout="row" ng-hide="readOnly || alreadyVoted">
     <div flex="33" class="create-left">
         <h4>{{ ballot.name }}</h4>
         <p>{{ ballot.description }}</p>
@@ -19,7 +19,7 @@
         </div>
         <div class="pull-right">
             <md-button ng-click="getResults()">See Results</md-button>
-            <md-button ng-click="validateAnswer()" class="md-raised md-primary">
+            <md-button ng-click="validateAnswer()" ng-disabled="form.submitted" class="md-raised md-primary">
                 <span class="fa fa-check-square-o"></span>
                 Answer
             </md-button>
@@ -30,7 +30,7 @@
     </div>
 </div>
 
-<div ng-if="resultsByRound.length && readOnly" class="create-ballot" layout="row">
+<div ng-if="resultsByRound.length && (readOnly || alreadyVoted)" class="create-ballot" layout="row">
     <div flex="33" class="create-left">
         <h4>{{ ballot.name }}</h4>
         <p>{{ ballot.description }}</p>

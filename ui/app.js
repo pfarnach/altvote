@@ -1,8 +1,8 @@
-'use strict';
 
 angular.module('altVote', [
 	'alt-vote-home',
 	'alt-vote-vote',
+	'alt-vote-core',
 	'ui.router',
 	'ui.bootstrap',
 	'ngCookies',

@@ -1,11 +1,12 @@
 function BallotResource($http) {
 	
 	return {
-		createBallot: createBallot,
-		getBallot: getBallot,
-		getAllBallots: getAllBallots,
-		castVote: castVote,
-		getResults: getResults
+		createBallot,
+		getBallot,
+		getBallotAdmin,
+		getAllBallots,
+		castVote,
+		getResults
 	};
 
 	function createBallot(ballot) {
@@ -16,37 +17,32 @@ function BallotResource($http) {
 				options: ballot.options,
 				email: ballot.email
 			})
-			.then(function(resp) {
-				return resp.data;
-			});
+			.then((resp) => resp.data);
 	}
 
 	function getBallot(uuid) {
-		return $http.get(sprintf(endpoints.ballot.getByUUID, uuid))
-			.then(function(resp){
-				return resp.data;
-			});
+		return $http.get(sprintf(endpoints.ballot.getBallot, uuid))
+			.then((resp) => resp.data);
+	}
+
+	function getBallotAdmin(uuid, adminId) {
+		return $http.get(sprintf(endpoints.ballot.getBallotAdmin, uuid, adminId))
+			.then((resp) => resp.data);
 	}
 
 	function getAllBallots() {
 		return $http.get(endpoints.ballot.getAll)
-			.then(function(resp){
-				return resp.data.ballots;
-			});
+			.then((resp) => resp.data.ballots);
 	}
 
 	function castVote(ranked_options) {
 		return $http.post(endpoints.ballot.castVote, { ranked_options: ranked_options })
-			.then(function(resp) {
-				return resp.data;
-			});
+			.then((resp) => resp.data);
 	}
 
 	function getResults(ballot_uuid) {
 		return $http.get(sprintf(endpoints.ballot.getResults, ballot_uuid))
-			.then(function(resp) {
-				return resp.data;
-			});
+			.then((resp) => resp.data);
 	}
 
 };

@@ -1,0 +1,6 @@
+<a ui-sref='vote.main({uuid: ballot.uuid})'>Back to Ballot</a>
+
+<div class="create-ballot">
+	<h1 style="color: black;" ng-show="admin.checked && admin.verified">Welcome to the admin page</h1>
+	<h1 style="color: black;" ng-show="admin.checked && !admin.verified">Wrong URL (redirect to ballot page)</h1>
+</div>

@@ -9,8 +9,6 @@ var webpack = require('webpack');
 
 var webpackConfig = {
 
-  watch: true,
-
   bail: true,
 
   context: path.resolve('./ui'),

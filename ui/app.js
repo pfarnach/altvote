@@ -25,19 +25,6 @@ angular.module('altVote', [
 	      url: '/',
 	      templateUrl: 'ui/modules/home/states/home/home.html',
 	      controller: 'HomeController'
-	    })
-	    .state('vote', {
-	    	url: '/ballot/:uuid',
-	    	templateUrl: 'ui/modules/vote/states/vote.html',
-	    	controller: 'VoteController',
-	    	resolve: {
-	    		ballot: function($stateParams, BallotResource) {
-	    			return BallotResource.getBallot($stateParams.uuid)
-	    				.then(function(resp) {
-	    					return resp;
-	    				});
-	    		}
-	    	}
 	    });
 
     $urlRouterProvider.otherwise('/');

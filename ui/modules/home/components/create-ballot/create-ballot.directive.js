@@ -42,7 +42,7 @@ function createBallot(BallotResource, $state) {
 			scope.submitted = true;
 
 			BallotResource.createBallot(ballot)
-				.then((resp) => $state.go('vote', { uuid: resp.ballot.uuid }))
+				.then((resp) => $state.go('vote.main', { uuid: resp.ballot.uuid }))
 				.catch((err) => console.error(err));
 		};
 

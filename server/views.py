@@ -1,17 +1,18 @@
 from __future__ import division
 
 from copy import deepcopy
-import uuid
+import uuid, random
 
 from flask import (Flask, Blueprint, jsonify, make_response, send_from_directory,
 	request, abort, render_template)
 
 from app import db
 from server import models
-from server.email import send_email
+from server.email_notify import send_email
 
 from server.utils.countUtils import CountUtils
 from server.utils.voteUtils import VoteUtils
+from server.utils.keywords import kw
 
 
 base_view = Blueprint('base', __name__, template_folder='./templates')
@@ -45,7 +46,13 @@ def create_ballot():
 		new_options = [];
 
 		# make ballot and save
-		ballot = models.Ballot(name=data['name'], description=data.get('description', ''))
+		ballot = models.Ballot(
+			name=data['name'],
+			description=data.get('description', ''),
+			type=kw['ballot_type']['irv'],
+			admin_id=random.randrange(10000,1000000)
+		)
+
 		db.session.add(ballot)
 		db.session.commit()
 
@@ -78,8 +85,17 @@ def get_ballot(uuid):
 	else:
 		return "No entry found for uuid %s" % uuid
 
+@base_view.route('/api/get_ballot_admin/<string:uuid>/<int:admin_id>', methods=['GET'])
+def get_ballot_admin(uuid, admin_id):
+	ballot = db.session.query(models.Ballot).filter(models.Ballot.uuid == uuid).first()
+
+	if ballot.admin_id == admin_id:
+		return jsonify({'verified': True})
+	else:
+		return jsonify({'verified': False})
+
 @base_view.route('/api/get_all_ballots', methods=['GET'])
-def get_all_ballot():
+def get_all_ballots():
 	ballots = jsonify(ballots=[i.serialize for i in models.Ballot.query.all()])
 	return ballots
 

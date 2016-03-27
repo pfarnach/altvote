@@ -24,7 +24,7 @@
 <div style="margin-top: 40px; background: #eee; padding: 15px;" layout="row">
 	<div ng-repeat="ballot in ballots" style="margin-bottom:10px;" flex="50">
 		<div style="font-weight:bold;">
-      <a ui-sref='vote({uuid: ballot.uuid})'>{{ ballot.name }}</a>
+      <a ui-sref='vote.main({uuid: ballot.uuid})'>{{ ballot.name }}</a>
     </div>
 		<div style="margin-bottom: 3px;">
       {{ ballot.description }}

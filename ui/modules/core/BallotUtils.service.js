@@ -9,7 +9,7 @@ function BallotUtils($http) {
     return _.reduce(resultsByRound, function(acc, result, i) {
 
       // Find all candidate marked as "eliminated" in all previous rounds
-      var idsToRemove = _(acc)
+      const idsToRemove = _(acc)
         .chain()
         .slice(0, i + 1)
         .flatten()
@@ -18,7 +18,7 @@ function BallotUtils($http) {
         .value();
 
       // Filter out candidates eliminated in previous rounds
-      var filteredResult = _.reject(result, function(res) {
+      const filteredResult = _.reject(result, function(res) {
         return _.includes(idsToRemove, res.id);
       });
 

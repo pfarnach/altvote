@@ -3,11 +3,17 @@ function VoteController($scope, ballot, BallotResource, BallotUtils, $cookies, $
   $scope.options = ballot.options;
   $scope.alreadyVoted = false;
   $scope.submittedVote = false;
-  $scope.readOnly = false;
   $scope.form = {
   	valid: false,
   	submitted: false
   };
+
+  if ($scope.ballot.status === 'DISABLED') {
+    $scope.readOnly = true;
+    getResults();
+  } else {
+    $scope.readOnly = false;
+  }
 
   // rank values to choose from
   $scope.availableRanks = _.range(1, $scope.options.length + 1);
@@ -54,7 +60,7 @@ function VoteController($scope, ballot, BallotResource, BallotUtils, $cookies, $
   	}
 
   	if ($scope.form.valid) {
-  		BallotResource.castVote(selected)
+  		BallotResource.castVote($scope.ballot.uuid, selected)
         .then(() => {
           // Temporary solution: set cookie to see if they've done poll already
           $cookies.put($scope.ballot.uuid, 'answered');
@@ -100,7 +106,7 @@ function VoteController($scope, ballot, BallotResource, BallotUtils, $cookies, $
   // Fetch results of ballot
   function getResults() {
     BallotResource.getResults($scope.ballot.uuid)
-      .then(function(resp) {
+      .then((resp) => {
         $scope.resultsByRound = BallotUtils.removePrevElimCands(resp.results_by_round);
         $scope.totalBallotsCast = resp.total_ballots_cast;
       });

@@ -30,11 +30,15 @@
     </div>
 </div>
 
-<div ng-if="resultsByRound.length && (readOnly || alreadyVoted)" class="create-ballot" layout="row">
+<div ng-if="resultsByRound && (readOnly || alreadyVoted)" class="create-ballot" layout="row">
     <div flex="33" class="create-left">
         <h4>{{ ballot.name }}</h4>
         <p>{{ ballot.description }}</p>
         <div>Ballots cast: {{ totalBallotsCast }}</div>
+        <div ng-if="ballot.status === 'DISABLED'">
+            <span class="fa fa-warning"></span>
+            Voting has been disabled by the ballot's creator
+        </div>
     </div>
     <div flex class="create-right">
         <div ng-repeat="resultRound in resultsByRound" class="result-row">
@@ -51,7 +55,7 @@
                 </span>
             </div>
         </div>
-        <div class="pull-right" ng-hide="alreadyVoted">
+        <div class="pull-right" ng-hide="alreadyVoted || ballot.status === 'DISABLED'">
             <md-button ng-click="hideResults()">
                 <span class="fa fa-arrow-circle-o-left"></span>
                 Back to Vote

@@ -78,12 +78,12 @@ def create_ballot():
 @base_view.route('/api/get_ballot/<string:uuid>', methods=['GET'])
 def get_ballot(uuid):
 	ballot = db.session.query(models.Ballot).filter(models.Ballot.uuid == uuid).first()
-	options = db.session.query(models.BallotOption).filter(models.BallotOption.ballot_id == ballot.id).all()
 
-	if ballot:
+	if ballot and ballot.status != kw['ballot_status']['deleted']:
+		options = db.session.query(models.BallotOption).filter(models.BallotOption.ballot_id == ballot.id).all()
 		return jsonify(ballot=ballot.serialize, options=[c.serialize for c in options])
 	else:
-		return "No entry found for uuid %s" % uuid
+		return errorResponse(message='Ballot {} doesn\'t exist'.format(uuid))
 
 @base_view.route('/api/get_ballot_admin/<string:uuid>/<int:admin_id>', methods=['GET'])
 def get_ballot_admin(uuid, admin_id):
@@ -94,14 +94,39 @@ def get_ballot_admin(uuid, admin_id):
 	else:
 		return jsonify({'verified': False})
 
+@base_view.route('/api/update_ballot/<string:uuid>', methods=['PUT'])
+def update_ballot(uuid):
+	if request.is_xhr:
+		ballot = db.session.query(models.Ballot).filter(models.Ballot.uuid == uuid).first()
+		options = request.json['options']
+		updated_status = options.get('status')
+
+		if ballot.status != kw['ballot_status']['active'] and ballot.status != kw['ballot_status']['disabled']:
+			return errorResponse(message='Ballot {} doesn\'t exist'.format(ballot.uuid))
+
+		if updated_status in kw['ballot_status'].values():
+			db.session.query(models.Ballot)\
+				.filter(models.Ballot.uuid == uuid)\
+				.update({'status': updated_status})
+			db.session.commit()
+			return 'Status successfully set to {}'.format(updated_status)
+
+		return errorResponse(message='Nothing to update')
+
 @base_view.route('/api/get_all_ballots', methods=['GET'])
 def get_all_ballots():
-	ballots = jsonify(ballots=[i.serialize for i in models.Ballot.query.all()])
+	unserialized_ballots = db.session.query(models.Ballot).filter(models.Ballot.status != kw['ballot_status']['deleted'])
+	ballots = jsonify(ballots=[i.serialize for i in unserialized_ballots])
 	return ballots
 
 @base_view.route('/api/cast_vote', methods=['POST'])
 def cast_vote():
 	if request.is_xhr:
+		ballot = db.session.query(models.Ballot).filter(models.Ballot.uuid == request.json['ballot_id']).first()
+
+		if ballot.status != kw['ballot_status']['active']:
+			return errorResponse(message='Ballot {} is inactive or deleted'.format(ballot.uuid))
+
 		vote_id = uuid.uuid4()
 		ranked_options = request.json['ranked_options']
 

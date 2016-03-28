@@ -5,6 +5,7 @@ function BallotResource($http) {
 		getBallot,
 		getBallotAdmin,
 		getAllBallots,
+		updateBallot,
 		castVote,
 		getResults
 	};
@@ -30,13 +31,22 @@ function BallotResource($http) {
 			.then((resp) => resp.data);
 	}
 
+	function updateBallot(uuid, options) {
+		return $http.put(sprintf(endpoints.ballot.updateBallot, uuid), { options })
+			.then((resp) => resp.data);
+	}
+
 	function getAllBallots() {
 		return $http.get(endpoints.ballot.getAll)
 			.then((resp) => resp.data.ballots);
 	}
 
-	function castVote(ranked_options) {
-		return $http.post(endpoints.ballot.castVote, { ranked_options: ranked_options })
+	function castVote(ballot_id, ranked_options) {
+		return $http.post(endpoints.ballot.castVote,
+			{
+				ballot_id,
+				ranked_options
+			})
 			.then((resp) => resp.data);
 	}
 

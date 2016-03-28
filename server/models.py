@@ -1,14 +1,16 @@
 import uuid
 from datetime import datetime
 
+from server.utils.keywords import kw
 from app import db
+
 
 class Ballot(db.Model):
 	__tablename__ = "ballot"
 	id = db.Column('id', db.Integer, primary_key=True)
 	uuid = db.Column('uuid', db.String, default=uuid.uuid4)
 	admin_id = db.Column('admin_id', db.Integer, nullable=False)
-	status = db.Column('status', db.String, default='ACTIVE')
+	status = db.Column('status', db.String, default=kw['ballot_status']['active'])
 	creation_date = db.Column('creation_date', db.Integer, default=int(datetime.utcnow().strftime('%s')))
 	name = db.Column('name', db.String, nullable=False)
 	description = db.Column('description', db.String)
@@ -31,7 +33,7 @@ class Ballot(db.Model):
 class BallotOption(db.Model):
 	__tablename__ = "ballot_option"
 	id = db.Column('id', db.Integer, primary_key=True)
-	status = db.Column('status', db.String, default='ACTIVE')
+	status = db.Column('status', db.String, default=kw['ballot_status']['active'])
 	ballot_id = db.Column('ballot_id', db.Integer, db.ForeignKey('ballot.id'))
 	name = db.Column('name', db.String, nullable=False)
 	ballot_votes = db.relationship("BallotVote")

@@ -5,9 +5,10 @@ function voteConfig($stateProvider) {
     	url: '/ballot/:uuid',
     	templateUrl: 'ui/modules/vote/states/abstract/vote-abstract.html',
     	resolve: {
-    		ballot($stateParams, BallotResource) {
+    		ballot($stateParams, BallotResource, $state) {
     			return BallotResource.getBallot($stateParams.uuid)
-    				.then((resp) => resp);
+    				.then((resp) => resp)
+            .catch(() => $state.go('home1'));
     		}
     	}
     })

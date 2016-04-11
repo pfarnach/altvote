@@ -29,3 +29,5 @@ angular.module('altVote', [
 
     $urlRouterProvider.otherwise('/');
 	});
+
+	// https://gidole.github.io/ -- FONT

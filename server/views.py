@@ -12,6 +12,7 @@ from server.email_notify import send_email
 
 from server.utils.countUtils import CountUtils
 from server.utils.voteUtils import VoteUtils
+from server.utils.timeUtils import TimeUtils
 from server.utils.keywords import kw
 
 
@@ -49,6 +50,7 @@ def create_ballot():
 		ballot = models.Ballot(
 			name=data['name'],
 			description=data.get('description', ''),
+			end_timestamp=data.get('endTimestamp'),
 			type=kw['ballot_type']['irv'],
 			admin_id=random.randrange(10000,1000000)
 		)
@@ -62,6 +64,8 @@ def create_ballot():
 			new_options.append(option_to_add)
 			db.session.add(option_to_add)
 
+		db.session.commit()
+
 		# Send email with link to ballot if they provided an email
 		if data.get('email'):
 			send_email('[AltVote] Your New Ballot',
@@ -70,13 +74,20 @@ def create_ballot():
 				render_template('email_ballot_create.html', ballot=ballot)
 			)
 
-		# TODO: is this necessary?
-		db.session.commit()
-
 		return jsonify(ballot=ballot.serialize, options=[c.serialize for c in new_options])
 
 @base_view.route('/api/get_ballot/<string:uuid>', methods=['GET'])
 def get_ballot(uuid):
+	secondsNowInUTC = TimeUtils.getSecondsNowInUTC()
+
+	# If ballot has expired, update its status
+	# TODO: This seems really inefficient -- make better
+	db.session.query(models.Ballot)\
+		.filter(models.Ballot.uuid == uuid)\
+		.filter(models.Ballot.end_timestamp < secondsNowInUTC)\
+		.update({models.Ballot.status: kw['ballot_status']['completed']})
+	db.session.commit()
+
 	ballot = db.session.query(models.Ballot).filter(models.Ballot.uuid == uuid).first()
 
 	if ballot and ballot.status != kw['ballot_status']['deleted']:

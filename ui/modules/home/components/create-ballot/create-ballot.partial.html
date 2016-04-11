@@ -5,7 +5,7 @@
         <!-- Name -->
         <md-input-container flex-gt-xs>
           <label>Name</label>
-          <input type="text" ng-model="ballot.name">
+          <input type="text" ng-model="ballot.name" ng-required="true">
         </md-input-container>
       </div>
 
@@ -26,6 +26,16 @@
             </md-tooltip>
           </label>
           <input type="email" placeholder="(optional)" ng-model="ballot.email">
+      </div>
+
+      <div layout-gt-xs="row">
+        <!-- Datetime -->
+        <label>End Date
+          <md-tooltip md-direction="top">
+            Optionally set when you want your ballot to end
+          </md-tooltip>
+        </label>
+        <md-datepicker ng-model="ballot.endDate" md-min-date="dateConfig.min" md-max-date="dateConfig.max" ng-change="updateDatetime(ballot.endDate)"></md-datepicker>
       </div>
     </div>
 

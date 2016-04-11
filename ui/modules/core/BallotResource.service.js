@@ -16,7 +16,8 @@ function BallotResource($http) {
 				name: ballot.name,
 				description: ballot.description,
 				options: ballot.options,
-				email: ballot.email
+				email: ballot.email,
+				endTimestamp: ballot.endTimestamp
 			})
 			.then((resp) => resp.data);
 	}

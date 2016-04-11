@@ -1,9 +1,18 @@
-<div class="create-ballot" layout="row" ng-hide="readOnly || alreadyVoted">
+<!-- VOTE MODE -->
+<div class="create-ballot" layout="row">
     <div flex="33" class="create-left">
         <h4>{{ ballot.name }}</h4>
-        <p>{{ ballot.description }}</p>
+        <div>{{ ballot.description }}</div>
+        <div ng-if="ballot.end_timestamp">Voting closes on {{ ballot.end_timestamp * 1000 | date: "MM/dd/yyyy 'at' hh:mm a" }}</div>
+        <div ng-if="totalBallotsCast">Ballots cast: {{ totalBallotsCast }}</div>
+        <div ng-if="ballot.status === 'DISABLED'">
+            <span class="fa fa-warning"></span>
+            Voting has been disabled by the ballot's creator
+        </div>
     </div>
-    <div flex class="create-right">
+
+    <!-- VOTE MODE -->
+    <div ng-hide="readOnly || alreadyVoted" flex class="create-right">
         <div layout="row" class="table-head">
           <div flex="15">Ranking</div>
           <div flex flex-offset="5">Options</div>
@@ -28,19 +37,9 @@
             {{ form.message }}
         </div>
     </div>
-</div>
 
-<div ng-if="resultsByRound && (readOnly || alreadyVoted)" class="create-ballot" layout="row">
-    <div flex="33" class="create-left">
-        <h4>{{ ballot.name }}</h4>
-        <p>{{ ballot.description }}</p>
-        <div>Ballots cast: {{ totalBallotsCast }}</div>
-        <div ng-if="ballot.status === 'DISABLED'">
-            <span class="fa fa-warning"></span>
-            Voting has been disabled by the ballot's creator
-        </div>
-    </div>
-    <div flex class="create-right">
+    <!-- READ ONLY MODE -->
+    <div ng-if="resultsByRound && (readOnly || alreadyVoted)" flex class="create-right">
         <div ng-repeat="resultRound in resultsByRound" class="result-row">
             <h5>Round #{{ $index + 1 }}</h5>
             <div ng-repeat="result in resultRound" ng-class="{ 'eliminated': result.isEliminated, 'winner': result.isWinner }">

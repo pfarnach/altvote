@@ -13,10 +13,23 @@ function createBallot(BallotResource, $state) {
 		scope.ballot = {
 			options: []
 		};
-		
+
+		// For calendar date picker
+		// Max date set: http://stackoverflow.com/questions/563406/add-days-to-datetime
+		const today = new Date();
+
+		scope.dateConfig = {
+			min: new Date(),
+			max: new Date(today.setDate(today.getDate() + 60))
+		};
+
 		scope.error = {
 			show: false,
 			msg: ''
+		};
+
+		scope.updateTime = (date) => {
+			scope.ballot.endTimestamp = date.getTime()/1000 + 86399;
 		};
 
 		scope.addBallotOption = (choice) => {

@@ -14,13 +14,8 @@ function createBallot(BallotResource, $state) {
 			options: []
 		};
 
-		// For calendar date picker
-		// Max date set: http://stackoverflow.com/questions/563406/add-days-to-datetime
-		const today = new Date();
-
-		scope.dateConfig = {
-			min: new Date(),
-			max: new Date(today.setDate(today.getDate() + 60))
+		scope.datetimeOptions = {
+			minView: 'hour'
 		};
 
 		scope.error = {
@@ -28,8 +23,25 @@ function createBallot(BallotResource, $state) {
 			msg: ''
 		};
 
-		scope.updateTime = (date) => {
-			scope.ballot.endTimestamp = date.getTime()/1000 + 86399;
+		// Don't let user select before current time (in one minute, for buffer)
+		// Have to do some trickery so you can still select day but not invalid hour within that day
+		// Docs: https://github.com/dalelotts/angular-bootstrap-datetimepicker
+		scope.validateDatetime = (view, dates) => {
+			const datetimeNow = new Date();
+			const timeInOneMinute = datetimeNow.getTime() + 60000;
+			const dayOfMonth = datetimeNow.getDate().toString();
+
+			_.each(dates, (date) => {
+				if (timeInOneMinute > date.localDateValue() && date.display !== dayOfMonth) {
+					date.selectable = false;
+				}
+			});
+		};
+
+		scope.datetimeToggle = (val) => {
+			if (!val) {
+				scope.ballot.endTimestamp = null;
+			}
 		};
 
 		scope.addBallotOption = (choice) => {

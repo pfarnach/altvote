@@ -4,7 +4,7 @@ angular.module('altVote', [
 	'alt-vote-vote',
 	'alt-vote-core',
 	'ui.router',
-	'ui.bootstrap',
+	'ui.bootstrap.datetimepicker',
 	'ngCookies',
 	'ngMaterial'
 	])

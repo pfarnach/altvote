@@ -11,6 +11,11 @@ function BallotResource($http) {
 	};
 
 	function createBallot(ballot) {
+		// Convert timestamp to utc seconds
+		if (ballot.endTimestamp) {
+			ballot.endTimestamp = ballot.endTimestamp.getTime() / 1000;
+		}
+
 		return $http.post(endpoints.ballot.createBallot, 
 			{		
 				name: ballot.name,

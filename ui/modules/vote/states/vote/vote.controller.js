@@ -1,15 +1,21 @@
 function VoteController($scope, ballot, BallotResource, BallotUtils, $cookies, $mdToast) {
+
   $scope.ballot = ballot.ballot;
   $scope.options = ballot.options;
-  $scope.alreadyVoted = false;
-  $scope.submittedVote = false;
+
   $scope.form = {
-  	valid: false,
-  	submitted: false
+    valid: false,
+    submitted: false
   };
 
+  $scope.alreadyVoted = false;
+  $scope.votingClosed = false;
+  $scope.submittedVote = false;
+
   if ($scope.ballot.status === 'DISABLED') {
-    $scope.readOnly = true;
+    getResults();
+  } else if ($scope.ballot.status === 'COMPLETED') {
+    $scope.votingClosed = true;
     getResults();
   } else {
     $scope.readOnly = false;
@@ -94,9 +100,8 @@ function VoteController($scope, ballot, BallotResource, BallotUtils, $cookies, $
   	}
   }
 
-  $scope.getResults = function() {
+  $scope.seeResults = function() {
     getResults();
-    $scope.readOnly = true;
   };
 
   $scope.hideResults = function() {
@@ -105,6 +110,8 @@ function VoteController($scope, ballot, BallotResource, BallotUtils, $cookies, $
 
   // Fetch results of ballot
   function getResults() {
+    $scope.readOnly = true;
+
     BallotResource.getResults($scope.ballot.uuid)
       .then((resp) => {
         $scope.resultsByRound = BallotUtils.removePrevElimCands(resp.results_by_round);

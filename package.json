@@ -11,9 +11,9 @@
   "devDependencies": {
     "angular": "^1.5.0",
     "angular-bootstrap": "0.12.2",
+    "angular-bootstrap-datetimepicker": "^1.0.1",
     "angular-cookies": "^1.5.0",
     "angular-material": "^1.0.6",
-    "angular-ui-bootstrap": "0.13.4",
     "angular-ui-router": "0.2.15",
     "babel-core": "^6.7.4",
     "babel-eslint": "^6.0.0-beta.6",
@@ -31,6 +31,7 @@
     "gulp-eslint": "^2.0.0",
     "gulp-sass": "^2.2.0",
     "lodash": "3.10.1",
+    "moment": "^2.12.0",
     "sprintf-js": "^1.0.3",
     "webpack": "^1.12.14"
   }

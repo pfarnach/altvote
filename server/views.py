@@ -136,7 +136,7 @@ def cast_vote():
 		ballot = db.session.query(models.Ballot).filter(models.Ballot.uuid == request.json['ballot_id']).first()
 
 		if ballot.status != kw['ballot_status']['active']:
-			return errorResponse(message='Ballot {} is inactive or deleted'.format(ballot.uuid))
+			return errorResponse(message='Ballot {} is inactive, completed or deleted'.format(ballot.uuid))
 
 		vote_id = uuid.uuid4()
 		ranked_options = request.json['ranked_options']

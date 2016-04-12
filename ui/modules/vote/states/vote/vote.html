@@ -3,12 +3,16 @@
     <div flex="33" class="create-left">
         <h4>{{ ballot.name }}</h4>
         <div>{{ ballot.description }}</div>
-        <div ng-if="ballot.end_timestamp">Voting closes on {{ ballot.end_timestamp * 1000 | date: "MM/dd/yyyy 'at' hh:mm a" }}</div>
-        <div ng-if="totalBallotsCast">Ballots cast: {{ totalBallotsCast }}</div>
+
+        <div ng-if="ballot.end_timestamp && !votingClosed">Voting closes on {{ ballot.end_timestamp * 1000 | date: "MM/dd/yyyy 'at' hh:mm a" }}</div>
+        <div ng-if="ballot.end_timestamp && votingClosed"><span class="fa fa-hourglass-end"></span> Voting ended on {{ ballot.end_timestamp * 1000 | date: "MM/dd/yyyy 'at' hh:mm a" }}</div>
+
         <div ng-if="ballot.status === 'DISABLED'">
             <span class="fa fa-warning"></span>
             Voting has been disabled by the ballot's creator
         </div>
+
+        <div ng-if="totalBallotsCast">Total votes cast: {{ totalBallotsCast }}</div>
     </div>
 
     <!-- VOTE MODE -->
@@ -27,7 +31,7 @@
             <div flex flex-offset="5" style="margin-top: 20px; margin-bottom: 26px;">{{ option.name }}</div>
         </div>
         <div class="pull-right">
-            <md-button ng-click="getResults()">See Results</md-button>
+            <md-button ng-click="seeResults()">See Results</md-button>
             <md-button ng-click="validateAnswer()" ng-disabled="form.submitted" class="md-raised md-primary">
                 <span class="fa fa-check-square-o"></span>
                 Answer
@@ -57,7 +61,7 @@
         <div class="pull-right" ng-hide="alreadyVoted || ballot.status === 'DISABLED'">
             <md-button ng-click="hideResults()">
                 <span class="fa fa-arrow-circle-o-left"></span>
-                Back to Vote
+                Back to Voting
             </md-button>
         </div>
     </div>

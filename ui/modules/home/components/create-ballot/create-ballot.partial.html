@@ -29,14 +29,23 @@
       </div>
 
       <div layout-gt-xs="row">
-        <!-- Datetime -->
+        <!-- Date -->
         <label>End Date
           <md-tooltip md-direction="top">
             Optionally set when you want your ballot to end
           </md-tooltip>
         </label>
-        <md-datepicker ng-model="ballot.endDate" md-min-date="dateConfig.min" md-max-date="dateConfig.max" ng-change="updateDatetime(ballot.endDate)"></md-datepicker>
+        <md-switch ng-model="ballot.showDatetime" aria-label="show datetime switch" ng-change="datetimeToggle(ballot.showDatetime)"></md-switch>
       </div>
+      <div>
+        <datetimepicker
+          data-ng-model="ballot.endTimestamp"
+          data-datetimepicker-config="datetimeOptions"
+          data-before-render="validateDatetime($view, $dates)"
+          ng-show="ballot.showDatetime">
+        </datetimepicker>
+      </div>
+
     </div>
 
     <div flex class="create-right">

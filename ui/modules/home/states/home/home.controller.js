@@ -1,4 +1,4 @@
-function HomeController($scope, $modal, $state, BallotResource) {
+function HomeController($scope, $state, BallotResource) {
 
   $scope.showCreateBallot = false;
 

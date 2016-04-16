@@ -28,3 +28,7 @@ class TestConfiguration(BaseConfiguration):
 
 class DebugConfiguration(BaseConfiguration):
 	DEBUG = True
+
+class ProdConfiguration(BaseConfiguration):
+	DEBUG = False
+	SQLALCHEMY_DATABASE_URI = keys.DB_URI_PROD

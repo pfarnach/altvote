@@ -22,7 +22,6 @@ base_view = Blueprint('base', __name__, template_folder='./templates')
 @base_view.after_request
 def after_request(response):
   response.headers.add('Access-Control-Allow-Origin', 'http://localhost:8001')
-  # response.headers.add('Access-Control-Allow-Origin', 'http://patf.pagekite.me')
   response.headers.add('Access-Control-Allow-Credentials', 'true')
   response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,X-Requested-With')
   response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
@@ -68,7 +67,7 @@ def create_ballot():
 
 		# Send email with link to ballot if they provided an email
 		if data.get('email'):
-			send_email('[AltVote] Your New Ballot',
+			send_email('[VoteBoat] Your New Ballot',
 				[data.get('email')],
 				render_template('email_ballot_create.txt', ballot=ballot),
 				render_template('email_ballot_create.html', ballot=ballot)

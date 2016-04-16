@@ -16,7 +16,7 @@ class Ballot(db.Model):
 	name = db.Column('name', db.String, nullable=False)
 	description = db.Column('description', db.String)
 	type = db.Column('type', db.String, nullable=False)
-	ballot_options = db.relationship("BallotOption")
+	ballot_options = db.relationship("BallotOption", cascade="all, delete-orphan")
 
 	@property
 	def serialize(self):
@@ -36,9 +36,9 @@ class BallotOption(db.Model):
 	__tablename__ = "ballot_option"
 	id = db.Column('id', db.Integer, primary_key=True)
 	status = db.Column('status', db.String, default=kw['ballot_status']['active'])
-	ballot_id = db.Column('ballot_id', db.Integer, db.ForeignKey('ballot.id'))
+	ballot_id = db.Column('ballot_id', db.Integer, db.ForeignKey('ballot.id', ondelete='cascade'))
 	name = db.Column('name', db.String, nullable=False)
-	ballot_votes = db.relationship("BallotVote")
+	ballot_votes = db.relationship("BallotVote", cascade="all, delete-orphan")
 
 	@property
 	def serialize(self):
@@ -54,7 +54,7 @@ class BallotVote(db.Model):
 	id = db.Column('id', db.Integer, primary_key=True)
 	ballot_id = db.Column('ballot_id', db.Integer, nullable=False)
 	vote_id = db.Column('uuid', db.String, nullable=False)
-	ballot_option_id = db.Column('ballot_option', db.Integer, db.ForeignKey('ballot_option.id'), nullable=False)
+	ballot_option_id = db.Column('ballot_option', db.Integer, db.ForeignKey('ballot_option.id', ondelete='cascade'), nullable=False)
 	creation_date = db.Column('creation_date', db.Integer, default=int(datetime.utcnow().strftime('%s')))
 	rank = db.Column('rank', db.Integer, nullable=False)
 	db.UniqueConstraint('ballot_option_id', 'id')

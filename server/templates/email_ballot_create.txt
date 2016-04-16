@@ -1,12 +1,12 @@
 Hey there!
 
-Here are two links to the ballot you just created on AltVote. The first link is to your ballot itself -- share this with friends! The second link is for your ballot's control panel. Don't share this link.
+Here are two links to the ballot you just created on VoteBoat. The first link is to your ballot itself -- share this with friends! The second link is for your ballot's control panel. Don't share this link.
 
-Public ballot: http://localhost:8000/#/ballot/{{ ballot.uuid }}
+Public ballot: https://secure-fjord-83932.herokuapp.com/#/ballot/{{ ballot.uuid }}
 
-Control panel: http://localhost:8000/#/ballot/{{ ballot.uuid }}/{{ ballot.admin_id }}
+Control panel: https://secure-fjord-83932.herokuapp.com/#/ballot/{{ ballot.uuid }}/{{ ballot.admin_id }}
 
 Enjoy and let us know if you have any questions or feedback!
 
 Best,
-The AltVote Team
+The VoteBoat Team

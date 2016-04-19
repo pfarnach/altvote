@@ -140,6 +140,15 @@ def cast_vote():
 		vote_id = uuid.uuid4()
 		ranked_options = request.json['ranked_options']
 
+		writeIns = [x for x in ranked_options if x.get('isWriteIn')]
+
+		for writeIn in writeIns:
+			option_to_add = models.BallotOption(name=writeIn['name'], ballot_id=ballot.id, is_write_in=True)
+			db.session.add(option_to_add)
+			db.session.commit()
+			writeIn['ballot_id'] = ballot.id
+			writeIn['id'] = option_to_add.id
+
 		# Check if vote ranks are sequential with no gaps and start at 1
 		if (VoteUtils.validateRankOrder(ranked_options)):
 			for rc in ranked_options:

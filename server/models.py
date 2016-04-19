@@ -38,15 +38,17 @@ class BallotOption(db.Model):
 	status = db.Column('status', db.String, default=kw['ballot_status']['active'])
 	ballot_id = db.Column('ballot_id', db.Integer, db.ForeignKey('ballot.id', ondelete='cascade'))
 	name = db.Column('name', db.String, nullable=False)
+	is_write_in = db.Column('is_write_in', db.Boolean, default=False)
 	ballot_votes = db.relationship("BallotVote", cascade="all, delete-orphan")
 
 	@property
 	def serialize(self):
 		"""Return object data in easily serializeable format"""
 		return {
-			'id': 				self.id,
-			'ballot_id':	self.ballot_id,
-			'name': 			self.name
+			'id': 					self.id,
+			'ballot_id':		self.ballot_id,
+			'name': 				self.name,
+			'is_write_in':	self.is_write_in
 		}
 
 class BallotVote(db.Model):

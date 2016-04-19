@@ -8,6 +8,12 @@ function VoteController($scope, ballot, BallotResource, BallotUtils, $cookies, $
     submitted: false
   };
 
+  $scope.writeIn = {};
+  $scope.writeInForm = {
+    msg: 'Name already exists!',
+    show: false
+  };
+
   $scope.alreadyVoted = false;
   $scope.votingClosed = false;
   $scope.submittedVote = false;
@@ -26,7 +32,7 @@ function VoteController($scope, ballot, BallotResource, BallotUtils, $cookies, $
   $scope.availableRanks.unshift('');
   
   // make default unselected
-  $scope.selected = _.map($scope.options, function(option, i) {
+  $scope.selected = _.map($scope.options, (option, i) => {
   	return {
   		rank: null,
   		ballot_id: option.ballot_id,
@@ -34,7 +40,7 @@ function VoteController($scope, ballot, BallotResource, BallotUtils, $cookies, $
   	};
   });
 
-  $scope.validateAnswer = function() {
+  $scope.validateAnswer = () => {
   	$scope.form.submitted = true;
   	$scope.form.valid = true;
 
@@ -45,7 +51,9 @@ function VoteController($scope, ballot, BallotResource, BallotUtils, $cookies, $
         return {
           rank: _.parseInt(option.rank),
           ballot_id: option.ballot_id,
-          id: option.id
+          name: option.name,
+          id: option.id,
+          isWriteIn: option.isWriteIn
         };
       })
       .value();
@@ -100,11 +108,28 @@ function VoteController($scope, ballot, BallotResource, BallotUtils, $cookies, $
   	}
   }
 
-  $scope.seeResults = function() {
+  // When user tries to create a write-in option
+  $scope.addWriteIn = (writeIn) => {    
+    const existingNames = _.map($scope.options, 'name');
+    $scope.writeInForm.show = false;
+
+    if (_.includes(existingNames, writeIn.name)) {
+      $scope.writeInForm.show = true;
+    } else if (writeIn.name) {
+      const newWriteIn = { name: _.clone(writeIn.name), isWriteIn: true};
+      $scope.options.push(newWriteIn);
+      $scope.selected.push(newWriteIn);
+      $scope.availableRanks = _.range(1, $scope.options.length + 1);
+      $scope.availableRanks.unshift('');   
+      writeIn.name = '';
+    }
+  };
+
+  $scope.seeResults = () => {
     getResults();
   };
 
-  $scope.hideResults = function() {
+  $scope.hideResults = () => {
     $scope.readOnly = false;
   };
 

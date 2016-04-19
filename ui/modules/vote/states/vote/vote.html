@@ -21,7 +21,7 @@
           <div flex="15">Ranking</div>
           <div flex flex-offset="5">Options</div>
         </div>
-        <div ng-repeat="option in options" layout="row">
+        <div ng-repeat="option in options | orderBy: 'isWriteIn'" layout="row">
             <md-select ng-init="selected[$index].rank = availableRanks[0]"
                        ng-model="selected[$index].rank"
                        aria-label="candidate selector"
@@ -30,9 +30,18 @@
             </md-select>
             <div flex flex-offset="5" style="margin-top: 20px; margin-bottom: 26px;">{{ option.name }}</div>
         </div>
+        <div layout="row">
+            <md-input-container>
+                <label>Write-In Name</label>
+                <input ng-model="writeIn.name">
+                <div ng-show="writeInForm.show">{{ writeInForm.msg }}</div>
+                <md-button class="md-fab md-primary" ng-click="addWriteIn(writeIn)"><span class="fa fa-plus-circle"></span></md-button>
+            </md-input-container>
+            
+        </div>
         <div class="pull-right">
             <md-button ng-click="seeResults()">See Results</md-button>
-            <md-button ng-click="validateAnswer()" ng-disabled="form.submitted" class="md-raised md-primary">
+            <md-button ng-click="validateAnswer()" ng-disabled="form.submitted" class="md-raised md-warn">
                 <span class="fa fa-check-square-o"></span>
                 Answer
             </md-button>

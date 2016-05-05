@@ -5,3 +5,4 @@ ENV/
 node_modules/
 .idea
 ui/dist
+npm-debug.log

@@ -1,68 +1,73 @@
-<div class="create-ballot">
-  <div layout="row">
-  	<div flex="33" class="create-left">
-      <div layout-gt-xs="row">
+<div class="center ballot-create-container">
+
+  <div class="ballot-create">
+    <accordion close-others="true">
+      <accordion-group is-open="true">
+        <accordion-heading class="accordion-header">
+          <span class="rounded-number">1</span>
+          <span>Ballot Info</span>
+        </accordion-heading>
         <!-- Name -->
-        <md-input-container flex-gt-xs>
+        <md-input-container>
           <label>Name</label>
-          <input type="text" ng-model="ballot.name" ng-required="true">
+          <input type="text" placeholder="(required)" ng-model="ballot.name" ng-required="true">
         </md-input-container>
-      </div>
-
-      <div layout-gt-xs="row">
         <!-- Description -->
-        <md-input-container flex-gt-xs>
+        <md-input-container>
           <label>Description</label>
-          <textarea type="text" placeholder="(optional)" ng-model="ballot.description">
-        </textarea>
-      </div>
-
-      <div layout-gt-xs="row">
+          <textarea placeholder="(optional)" ng-model="ballot.description"></textarea>
+        </md-input-container>
+      </accordion-group>
+      <accordion-group>
+        <accordion-heading class="accordion-header">
+          <span class="rounded-number">2</span>
+          <span>Ballot Choices</span>
+        </accordion-heading>
+        <!-- Ballot options -->
+        <md-chips
+          ng-model="ballot.options"
+          placeholder="Type choices here"
+          md-separator-keys="[188, 186, 13, 9]">
+        </md-chips>
+      </accordion-group>
+      <accordion-group>
+        <accordion-heading class="accordion-header">
+          <span class="rounded-number">3</span>
+          <span>End Time <span class="lighten">(Optional)</span></span>
+        </accordion-heading>
+        <datetimepicker
+          class="center"
+          data-ng-model="ballot.endTimestamp"
+          data-datetimepicker-config="datetimeOptions"
+          data-before-render="validateDatetime($view, $dates)">
+        </datetimepicker>
+      </accordion-group>
+      <accordion-group>
+        <accordion-heading class="accordion-header">
+          <span class="rounded-number">4</span>
+          <span>Email</span>
+        </accordion-heading>
         <!-- Email -->
-        <md-input-container flex-gt-xs>
+        <md-input-container>
           <label>Email
             <md-tooltip md-direction="top">
               Will only be used to send you a link to your ballot for your records/to share
             </md-tooltip>
           </label>
-          <input type="email" placeholder="(optional)" ng-model="ballot.email">
-      </div>
-
-      <div layout-gt-xs="row">
-        <!-- Date -->
-        <label>End Date
-          <md-tooltip md-direction="top">
-            Optionally set when you want your ballot to end
-          </md-tooltip>
-        </label>
-        <md-switch ng-model="ballot.showDatetime" aria-label="show datetime switch" ng-change="datetimeToggle(ballot.showDatetime)"></md-switch>
-      </div>
-      <div>
-        <datetimepicker
-          data-ng-model="ballot.endTimestamp"
-          data-datetimepicker-config="datetimeOptions"
-          data-before-render="validateDatetime($view, $dates)"
-          ng-show="ballot.showDatetime">
-        </datetimepicker>
-      </div>
-
-    </div>
-
-    <div flex class="create-right">
-  		<!-- Ballot options -->
-      <md-chips ng-model="ballot.options" placeholder="Enter Ballot Choices"></md-chips>
-
-      <!-- Submit button -->
-      <div class="pull-right">
-        <md-button ng-click="createBallot(ballot)"
-                   ng-disabled="submitted">
-          <span class="fa fa-check-square-o"></span>
-          Create Ballot
-        </md-button>
-      </div>
-  	</div>
+          <input type="email" ng-model="ballot.email">
+        </md-input-container>
+      </accordion-group>
+    </accordion>
   </div>
 
-	<!-- Form error message -->
-	<div ng-show="error.show">{{ error.msg }}</div>
+  <div>
+    <md-button class="center md-raised md-warn" ng-click="createBallot(ballot)" ng-disabled="submitted">Create Ballot</md-button>
+  </div>
+
+  <!-- Form error message -->
+  <div class="error-msg" ng-show="error.show">
+    <span class="fa fa-exclamation-circle"></span>
+    {{ error.msg }}
+  </div>
 </div>
+

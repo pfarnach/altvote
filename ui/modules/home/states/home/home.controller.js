@@ -1,4 +1,10 @@
-function HomeController($scope, $state, BallotResource) {
+function HomeController(
+	$scope,
+	$state,
+	BallotResource,
+	$anchorScroll,
+	$location
+	) {
 
   $scope.showCreateBallot = false;
 
@@ -6,6 +12,11 @@ function HomeController($scope, $state, BallotResource) {
     .then((resp) => {
       $scope.ballots = resp;
     });
+
+  $scope.goToCreate = () => {
+    $location.hash('ballot-create');
+    $anchorScroll();
+  };
 
 }
 

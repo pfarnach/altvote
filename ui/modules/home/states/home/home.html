@@ -1,19 +1,7 @@
-<div class="hero-container" layout="row">
-  <div flex="60">
-  	<h3>VoteBoat is a simple platform to help you make ranked choice ballots that anyone can vote on</h3>
-  	<div>
-  		<ul>
-  			<li>Instead of only choosing one candidate, you get to rank your choices. This gets rid of the <a href="https://en.wikipedia.org/wiki/Spoiler_effect" target="_blank">Spoiler Effect</a></li>
-  			<li>To win, a candidate has to get more than 50% of the vote (unlike the <a href="https://en.wikipedia.org/wiki/First-past-the-post_voting" target="_blank">First Past the Post</a> system)</li>
-  			<li>If no candidate has over 50% of the vote after the first round, the last place candidate gets eliminated -- whoever voted for them gets their vote redistributed to their second choice.</li>
-  		</ul>
-  	</div>
-  </div>
-  <div flex flex-offset="10">
-    <div class="embed-container">
-      <iframe src="https://player.vimeo.com/video/112760841" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-    </div>
-  </div>
+<div class="hero-container" layout="column" layout-align="center center">
+	<h3 class="hero-text">VoteBoat is a simple platform to help you make instant runoff ballots for planning, polling, group decision-making and anything else.</h3>
+  <h4 class="margin-15-top hero-text">Just
+    <md-button ng-click="goToCreate()" class="md-raised md-primary margin-0">make</md-button> a ballot and share</h4>
 </div>
 
 <!-- Create ballot form -->

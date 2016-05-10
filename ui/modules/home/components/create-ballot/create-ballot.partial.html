@@ -1,4 +1,4 @@
-<div class="center ballot-create-container">
+<div class="center ballot-create-container" id="ballot-create">
 
   <div class="ballot-create">
     <accordion close-others="true">
@@ -8,15 +8,17 @@
           <span>Ballot Info</span>
         </accordion-heading>
         <!-- Name -->
-        <md-input-container>
-          <label>Name</label>
-          <input type="text" placeholder="(required)" ng-model="ballot.name" ng-required="true">
-        </md-input-container>
-        <!-- Description -->
-        <md-input-container>
-          <label>Description</label>
-          <textarea placeholder="(optional)" ng-model="ballot.description"></textarea>
-        </md-input-container>
+        <div layout="column">
+          <md-input-container>
+            <label>Name</label>
+            <input type="text" placeholder="(required)" ng-model="ballot.name" ng-required="true">
+          </md-input-container>
+          <!-- Description -->
+          <md-input-container>
+            <label>Description</label>
+            <textarea placeholder="(optional)" ng-model="ballot.description"></textarea>
+          </md-input-container>
+        </div>
       </accordion-group>
       <accordion-group>
         <accordion-heading class="accordion-header">

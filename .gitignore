@@ -1,5 +1,6 @@
 server/keys.py
 **/*.pyc
+**/*.css
 ENV/
 .DS_Store
 node_modules/

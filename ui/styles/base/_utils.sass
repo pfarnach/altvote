@@ -1,2 +1,13 @@
 .center
 	margin: 0 auto
+
+// null b/c we want to generate class names with no direction specified
+$spacing: null, -top, -bottom, -left, -right;
+
+@for $i from 0 through 3
+  @each $direction in $spacing
+    .padding-#{$i * 5}#{$direction}
+      padding#{$direction}: #{$i * 5}px
+
+    .margin-#{$i * 5}#{$direction}
+      margin#{$direction}: #{$i * 5}px

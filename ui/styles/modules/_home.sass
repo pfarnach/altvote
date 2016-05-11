@@ -1,10 +1,34 @@
+create-ballot
+  background-color: $main-blue
+
 .hero-container
 	margin: 0
 	padding: 5px 15px
 	height: 94vh
+	background-color: $main-red-light
+
+	.hero-content
+		max-width: 960px
 
 	.hero-text
 		text-align: center
+		color: $main-white
+
+	.anchor-btn
+		font-weight: bold
 
 	.md-button
 		background-color: $main-blue !important
+
+.ballot-container
+	background-color: $main-white
+	display: flex
+	flex-direction: column
+	flex-flow: center
+	justify-content: center
+
+	create-ballot
+		padding: 40px 0
+
+	.md-button
+		background-color: $main-red-light !important

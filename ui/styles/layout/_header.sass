@@ -1,6 +1,13 @@
 .header-bar
-  position: relative
-  z-index: 1
-  background: $main-blue-light
-  box-shadow: 0 2px 2px rgba(0, 0, 0, .2)
-  min-height: 30px
+	position: relative
+	z-index: 1
+	background: $main-blue-light
+	box-shadow: 0 2px 2px rgba(0, 0, 0, .2)
+	min-height: 30px
+
+	a
+		text-decoration: none
+
+	.header-text
+		@extend %header-font
+		font-size: $font-lg

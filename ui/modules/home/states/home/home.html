@@ -1,14 +1,24 @@
 <div class="hero-container" layout="column" layout-align="center center">
-	<h3 class="hero-text">VoteBoat is a simple platform to help you make instant runoff ballots for planning, polling, group decision-making and anything else.</h3>
-  <h4 class="margin-15-top hero-text">Just
-    <md-button ng-click="goToCreate()" class="md-raised md-primary margin-0">make</md-button> a ballot and share</h4>
+  <div class="hero-content">
+  	<h3 class="hero-text padding-15-bottom">VoteBoat is a simple platform to help you make instant runoff ballots for planning, polling, group decision-making and anything in between.</h3>
+    <h4 class="padding-15-top hero-text">Just
+      <md-button ng-click="goToCreate()" class="anchor-btn md-raised md-primary margin-0">make</md-button> a ballot and share
+    </h4>
+  </div>
 </div>
 
 <!-- Create ballot form -->
-<create-ballot></create-ballot>
+<div class="ballot-container">
+  <create-ballot></create-ballot>
+</div>
+
+<!-- Footer -->
+<footer class="footer" layout="row" layout-align="end center">
+  <span>Made by<a href="http://www.patfarnach.com" target="_blank">&nbspPat Farnach</a></span>
+</footer>
 
 <!-- All ballots -->
-<div style="margin-top: 40px; background: #eee; padding: 15px;" layout="row">
+<div style="display: none; margin-top: 40px; background: #eee; padding: 15px;" layout="row">
 	<div ng-repeat="ballot in ballots" style="margin-bottom:10px;" flex="50">
 		<div style="font-weight:bold;">
       <a ui-sref='vote.main({uuid: ballot.uuid})'>{{ ballot.name }}</a>

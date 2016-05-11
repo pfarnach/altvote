@@ -45,17 +45,18 @@
         </datetimepicker>
       </accordion-group>
       <accordion-group>
-        <accordion-heading class="accordion-header">
+        <accordion-heading layout="row" class="accordion-header">
           <span class="rounded-number">4</span>
-          <span>Email</span>
+          <span flex="95">Email</span>
+          <span class="fa fa-question-circle" ng-click="showEmailInfo()">
+            <md-tooltip md-direction="top">
+              Will only be used to send a link to your ballot for your records. Promise.
+            </md-tooltip>
+          </span>
         </accordion-heading>
         <!-- Email -->
         <md-input-container>
-          <label>Email
-            <md-tooltip md-direction="top">
-              Will only be used to send you a link to your ballot for your records/to share
-            </md-tooltip>
-          </label>
+          <label>Email</label>
           <input type="email" ng-model="ballot.email">
         </md-input-container>
       </accordion-group>

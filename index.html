@@ -9,6 +9,7 @@
 	<title>VoteBoat</title>
 
 	<!-- Dependencies -->
+	<link rel="stylesheet" href="ui/fonts/aleo_bold_macroman/stylesheet.css">
 	<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="node_modules/angular-bootstrap-datetimepicker/src/css/datetimepicker.css"/>
 	<link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css">
@@ -23,7 +24,9 @@
       <div layout="row">
         <div class="flex">
           <a ui-sref="home1">
-            <h1 class="pull-left"><span class="fa fa-check-square-o"></span>oteBoat</h1>
+            <h1 class="header-text">
+            	VoteBoat <span class="fa fa-check-square"></span>
+            </h1>
           </a>
         </div>
       </div>
@@ -31,7 +34,7 @@
   </div>
 
 	<div class="main-content">
-		<div ui-view class="container"></div>
+		<div ui-view></div>
 	</div>
 
 	<!-- Dependencies -->

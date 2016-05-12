@@ -1,7 +1,6 @@
 from app import app, db
 from server.views import base_view
 
-
 app.register_blueprint(base_view)
 
 # To get the show on the road

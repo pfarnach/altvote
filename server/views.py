@@ -6,7 +6,7 @@ import uuid, random
 from flask import (Flask, Blueprint, jsonify, make_response, send_from_directory,
 	request, abort, render_template)
 
-from app import db
+from app import db, app
 from server import models
 from server.email_notify import send_email
 
@@ -35,8 +35,9 @@ def index(**kwargs):
 # static path info: https://stackoverflow.com/questions/24099818/angularjs-not-running-in-flask-application
 # static path info: https://stackoverflow.com/questions/20646822/how-to-serve-static-files-in-flask
 @base_view.route('/<path:path>')
+@app.cache.cached(timeout=300)
 def serve_js(path):
-  return send_from_directory('', path)
+	return send_from_directory('', path)
 
 @base_view.route('/api/create_ballot', methods=['POST'])
 def create_ballot():

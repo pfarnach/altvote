@@ -35,8 +35,7 @@ def index(**kwargs):
 # static path info: https://stackoverflow.com/questions/24099818/angularjs-not-running-in-flask-application
 # static path info: https://stackoverflow.com/questions/20646822/how-to-serve-static-files-in-flask
 @base_view.route('/<path:path>')
-@app.cache.cached(timeout=300)
-def serve_js(path):
+def serve_static(path):
 	return send_from_directory('', path)
 
 @base_view.route('/api/create_ballot', methods=['POST'])

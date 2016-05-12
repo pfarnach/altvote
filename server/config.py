@@ -19,7 +19,6 @@ class BaseConfiguration:
 	MAIL_USE_SSL = True
 	MAIL_USERNAME = email['full_email']
 	MAIL_PASSWORD = email['password']
-	CACHE_TYPE = 'simple'
 
 class TestConfiguration(BaseConfiguration):
 	TESTING = True

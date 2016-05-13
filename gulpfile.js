@@ -8,6 +8,7 @@ var eslint        = require('gulp-eslint');
 var webpack       = require('webpack');
 var webpackConfig = require('./webpack.config');
 var sourcemaps    = require('gulp-sourcemaps');
+var cleanCSS      = require('gulp-clean-css');
 
 var stylesConfig = {
   autoprefixer: {
@@ -59,6 +60,7 @@ gulp.task('styles', function() {
     .pipe(sourcemaps.init())
     .pipe(sass(stylesConfig.settings))
     .pipe(autoprefixer(stylesConfig.autoprefixer))
+    .pipe(cleanCSS())
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(stylesConfig.dest))
     .pipe(gulp.dest(stylesConfig.uiDest))

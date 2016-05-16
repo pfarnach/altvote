@@ -1,0 +1,19 @@
+.admin-container
+	@include main-card()
+	padding: 20px
+	max-width: $max-width
+	margin: 40px auto
+
+	.action-wrapper
+		margin-top: 30px
+
+		.md-button.md-primary.md-raised
+			background-color: $main-blue
+
+		.md-button.md-warn.md-raised
+			background-color: $main-red-light
+
+@media (max-width: 660px)
+	
+	.admin-container
+		margin: 20px

@@ -6,13 +6,16 @@ body
   width: 100%
   height: calc(100% - 50px)
   overflow-y: auto
+  background-color: $main-red-light
 
+h1, h2, h3, h4, h5, h6
+  margin: 10px 0
 
 h1
   margin: 0
   color: $main-black
   font-size: $font-md-2
-  line-height: 50px
+  line-height: 30px
 
 h3
   font-size: $font-lg
@@ -23,11 +26,20 @@ h4
   font-size: $font-md-1
   color: $main-red-light
 
+h5
+  font-size: $font-md-2
+
+h6
+  font-size: $font-sm-1
+
 p
   font-size: $font-sm-1
 
 a
-	color: $main-blue
+	color: $main-black
+
+// Common variables
+$max-width: 960px
 
 // Angular material design over-rides
 .md-button

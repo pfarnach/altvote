@@ -1,25 +1,67 @@
-.table-head
-  color: $main-grey
-  font-weight: 500
+.vote-container
+  max-width: $max-width
+  margin: 40px auto
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12)
+  border-collapse: separate
+  border-radius: 4px
 
-.error
-  color: red
+  .panel-left
+    border-right: 1px solid rgba(0, 0, 0, .2)
+    background-color: $main-blue-light
+    padding: 15px 25px
 
-.eliminated
-  background: #FBE0E0
+    .ballot-name
+      @include main-card()
+      padding: 15px
 
-.winner
-  background: green
-  font-weight: 500
-  color: $main-off-white
+  .panel-right
+    padding: 15px 25px
+    background-color: $main-blue-light
 
-.result-row
-  padding: 0 15px 15px
-  margin-bottom: 15px
-  border-bottom: 1px solid #bdbdbd
+    .vote-select-container
+      @include main-card()
+      padding: 20px
+      margin: 10px 0
 
-.result-row:last-child
-  border: none
+      md-select
+        margin: 10px 0
 
-.result-row > div
-  padding: 5px 10px
+    .write-in-container
+      margin-top: 40px
+
+      .md-button.md-primary.md-fab
+        background-color: $main-red-light
+
+    .md-button.md-warn.md-raised
+      background-color: $main-red-light
+
+  .ballot-info-container
+    margin-top: 30px
+    @include main-card()
+    padding: 20px
+
+    .ballot-info:not(:first-child)
+      margin-top: 15px
+
+  .result-row
+    @include main-card()
+    padding: 15px
+    margin-bottom: 15px
+
+    .result-icon
+      float: right
+
+    .winner
+      color: $success-green
+
+    .eliminated
+      color: $main-red
+
+    &:last-child
+      border: none
+
+    & > div
+      padding: 5px 10px
+  
+    & > div:not(:last-child)
+      border-bottom: 1px solid rgba(0,0,0,.14)

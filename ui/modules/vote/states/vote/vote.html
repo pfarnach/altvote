@@ -1,73 +1,83 @@
 <!-- VOTE MODE -->
-<div class="create-ballot" layout="row">
-    <div flex="33" class="create-left">
-        <h4>{{ ballot.name }}</h4>
-        <div>{{ ballot.description }}</div>
+<div layout="column" layout-gt-xs="row" class="vote-container">
+    <div flex-gt-xs="40" flex class="panel-left">
+        <h3 class="ballot-name">{{ ballot.name }}</h3>
 
-        <div ng-if="ballot.end_timestamp && !votingClosed">Voting closes on {{ ballot.end_timestamp * 1000 | date: "MM/dd/yyyy 'at' hh:mm a" }}</div>
-        <div ng-if="ballot.end_timestamp && votingClosed"><span class="fa fa-hourglass-end"></span> Voting ended on {{ ballot.end_timestamp * 1000 | date: "MM/dd/yyyy 'at' hh:mm a" }}</div>
+        <div class="ballot-info-container">
+            <div class="ballot-info">{{ ballot.description }}</div>
 
-        <div ng-if="ballot.status === 'DISABLED'">
-            <span class="fa fa-warning"></span>
-            Voting has been disabled by the ballot's creator
+            <div class="ballot-info" ng-if="ballot.end_timestamp && !votingClosed">Voting closes on {{ ballot.end_timestamp * 1000 | date: "MM/dd/yyyy 'at' hh:mma" }}</div>
+            <div class="ballot-info" ng-if="ballot.end_timestamp && votingClosed"><span class="fa fa-hourglass-end"></span> Voting ended on {{ ballot.end_timestamp * 1000 | date: "MM/dd/yyyy 'at' hh:mm a" }}</div>
+
+            <div class="ballot-info" ng-if="ballot.status === 'DISABLED'">
+                <span class="fa fa-warning"></span>
+                Voting has been disabled by the ballot's creator
+            </div>
+
+            <div class="ballot-info" ng-if="totalBallotsCast">Votes cast: {{ totalBallotsCast }}</div>
         </div>
-
-        <div ng-if="totalBallotsCast">Total votes cast: {{ totalBallotsCast }}</div>
     </div>
 
     <!-- VOTE MODE -->
-    <div ng-hide="readOnly || alreadyVoted" flex class="create-right">
-        <div layout="row" class="table-head">
-          <div flex="15">Ranking</div>
-          <div flex flex-offset="5">Options</div>
-        </div>
-        <div ng-repeat="option in options | orderBy: 'isWriteIn'" layout="row">
-            <md-select ng-init="selected[$index].rank = availableRanks[0]"
-                       ng-model="selected[$index].rank"
-                       aria-label="candidate selector"
-                       flex="15">
-                <md-option ng-repeat="rank in availableRanks">{{ rank }}</md-option>
-            </md-select>
-            <div flex flex-offset="5" style="margin-top: 20px; margin-bottom: 26px;">{{ option.name }}</div>
-        </div>
-        <div layout="row">
-            <md-input-container>
-                <label>Write-In Name</label>
-                <input ng-model="writeIn.name">
-                <div ng-show="writeInForm.show">{{ writeInForm.msg }}</div>
-                <md-button class="md-fab md-primary" ng-click="addWriteIn(writeIn)"><span class="fa fa-plus-circle"></span></md-button>
-            </md-input-container>
+    <div flex-gt-xs="60" flex ng-hide="readOnly || alreadyVoted" class="panel-right">
+        <div class="vote-select-container">
+            <div layout="row">
+                <h6 flex-gt-sm="15" flex="30">Ranking</h6>
+                <h6 flex flex-offset="5">Option</h6>
+            </div>
+            <div ng-repeat="option in options | orderBy: 'isWriteIn'" layout="row">
+                <md-select ng-init="selected[$index].rank = availableRanks[0]"
+                           ng-model="selected[$index].rank"
+                           aria-label="candidate selector"
+                           flex-gt-sm="15"
+                           flex="30">
+                    <md-option ng-repeat="rank in availableRanks">{{ rank }}</md-option>
+                </md-select>
+                <div flex flex-offset="5" style="margin-top: 20px; margin-bottom: 26px;">{{ option.name }}</div>
+            </div>
             
+            <!-- Don't display this yet -->
+            <div layout="row" class="write-in-container" style="display: none;">
+                <md-input-container>
+                    <label>Write-In</label>
+                    <input ng-model="writeIn.name" placeholder="Add a write-in">
+                    <div ng-show="writeInForm.show">{{ writeInForm.msg }}</div>
+                </md-input-container>
+                <md-button class="md-fab md-primary md-mini" ng-click="addWriteIn(writeIn)"><span class="fa fa-plus-circle"></span></md-button>
+            </div>
+            <div ng-show="!form.valid && form.submitted" class="error">
+                {{ form.message }}
+            </div>
         </div>
-        <div class="pull-right">
+
+        <div layout="row" layout-align="end center">
             <md-button ng-click="seeResults()">See Results</md-button>
-            <md-button ng-click="validateAnswer()" ng-disabled="form.submitted" class="md-raised md-warn">
-                <span class="fa fa-check-square-o"></span>
-                Answer
-            </md-button>
+            <md-button ng-click="validateAnswer()" ng-disabled="form.submitted" class="md-raised md-warn">Submit</md-button>
         </div>
-        <div ng-show="!form.valid && form.submitted" class="error">
-            {{ form.message }}
-        </div>
+        
     </div>
 
     <!-- READ ONLY MODE -->
-    <div ng-if="resultsByRound && (readOnly || alreadyVoted)" flex class="create-right">
+    <div flex-gt-xs="60" flex ng-if="resultsByRound && (readOnly || alreadyVoted)" class="panel-right">
         <div ng-repeat="resultRound in resultsByRound" class="result-row">
-            <h5>Round #{{ $index + 1 }}</h5>
-            <div ng-repeat="result in resultRound" ng-class="{ 'eliminated': result.isEliminated, 'winner': result.isWinner }">
+            <h4>Round #{{ $index + 1 }}</h4>
+            <div ng-repeat="result in resultRound">
                 <span>{{ result.name }}: {{ result.percent_vote === 0 ? 0 : (result.percent_vote * 100 | number : 1) }}%</span>
-                <span ng-show="result.isWinner" class="pull-right">
-                    <span class="fa fa-check-circle"></span>
-                    Winner
-                </span>
-                <span ng-show="result.isEliminated" class="pull-right">
-                    <span class="fa fa-times"></span>
-                    Eliminated
+                <span class="result-icon" ng-class="{ 'winner': result.isWinner, 'eliminated': result.isEliminated }">
+                    <span ng-show="result.isWinner" class="fa fa-check-circle">
+                        <md-tooltip md-direction="top">
+                          This candidate is the winner
+                        </md-tooltip>
+                    </span>
+                    <span ng-show="result.isEliminated" class="fa fa-times-circle">
+                        <md-tooltip md-direction="top">
+                          This candidate has been eliminated
+                        </md-tooltip>
+                    </span>
                 </span>
             </div>
         </div>
-        <div class="pull-right" ng-hide="alreadyVoted || ballot.status === 'DISABLED'">
+        <div ng-hide="alreadyVoted || ballot.status === 'DISABLED'" layout="row" layout-align="end center">
             <md-button ng-click="hideResults()">
                 <span class="fa fa-arrow-circle-o-left"></span>
                 Back to Voting

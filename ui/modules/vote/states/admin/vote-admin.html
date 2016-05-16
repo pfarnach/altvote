@@ -1,13 +1,12 @@
-<a ui-sref='vote.main({uuid: ballot.uuid})'>Back to Ballot</a>
+<div class="admin-container">
+	<div class="create-ballot">
+		<h1 ng-show="admin.checked && admin.verified">Welcome to the admin page!</h1>
+		<h1 ng-show="admin.checked && !admin.verified">Wrong URL (redirect to ballot page)</h1>
+	</div>
 
-<div class="create-ballot">
-	<h1 style="color: black;" ng-show="admin.checked && admin.verified">Welcome to the admin page</h1>
-	<h1 style="color: black;" ng-show="admin.checked && !admin.verified">Wrong URL (redirect to ballot page)</h1>
-</div>
+	<a ui-sref='vote.main({uuid: ballot.uuid})'><span class="fa fa-arrow-circle-o-left"></span> Back to your ballot</a>
 
-<div>
-	<h3>Ballot actions:</h3>
-	<div>
+	<div layout="row" class="action-wrapper">
 		<md-button class="md-raised md-primary" ng-click="toggleActivation($event, ballot.status)">
       <span ng-class="ballot.status === 'ACTIVE' ? 'fa-pause-circle' : 'fa-play-circle'" class="fa"></span>
       {{ ballot.status === 'ACTIVE' ? 'Disable' : 'Activate' }}

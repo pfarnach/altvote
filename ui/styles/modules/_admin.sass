@@ -4,6 +4,9 @@
 	max-width: $max-width
 	margin: 40px auto
 
+	h1
+		margin-bottom: 10px
+
 	.action-wrapper
 		margin-top: 30px
 
@@ -13,7 +16,12 @@
 		.md-button.md-warn.md-raised
 			background-color: $main-red-light
 
-@media (max-width: 660px)
-	
+@media (max-width: $max-width)
+
 	.admin-container
 		margin: 20px
+
+@media (max-width: 600px)
+	
+	.admin-container
+		text-align: center

@@ -7,11 +7,11 @@
 	<a ui-sref='vote.main({uuid: ballot.uuid})'><span class="fa fa-arrow-circle-o-left"></span> Back to your ballot</a>
 
 	<div layout="row" class="action-wrapper">
-		<md-button class="md-raised md-primary" ng-click="toggleActivation($event, ballot.status)">
+		<md-button flex-xs="50" class="md-raised md-primary" ng-click="toggleActivation($event, ballot.status)">
       <span ng-class="ballot.status === 'ACTIVE' ? 'fa-pause-circle' : 'fa-play-circle'" class="fa"></span>
       {{ ballot.status === 'ACTIVE' ? 'Disable' : 'Activate' }}
     </md-button>
-		<md-button class="md-raised md-warn" ng-click="showConfirmDelete($event)">
+		<md-button flex-xs="50" class="md-raised md-warn" ng-click="showConfirmDelete($event)">
       <span class="fa fa-times"></span>
       Delete
     </md-button>

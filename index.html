@@ -8,7 +8,7 @@
 	<title>VoteBoat</title>
 
 	<!-- Dependencies -->
-	<link rel="stylesheet" href="ui/fonts/aleo_bold_macroman/stylesheet.css">
+	<link rel="stylesheet" href="ui/fonts/launica_regular_macroman/stylesheet.css">
 	<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="node_modules/angular-bootstrap-datetimepicker/src/css/datetimepicker.css"/>
 	<link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css">
@@ -21,18 +21,16 @@
 
   <div class="header-bar">
     <a ui-sref="home1">
-      <h1 class="header-text">
-      	VoteBoat <span class="fa fa-check-square header-icon"></span>
-      </h1>
+      <h1 class="header-text">VoteBoat</h1>
     </a>
   </div>
-
-	<!-- To have above-the-fold content display until angular loads -->
-  <div ng-if="false" style="background: #EB7B59; height: 96vh;"></div>
 
 	<div class="main-content">
 		<div ui-view></div>
 	</div>
+
+	<!-- To have above-the-fold content display until angular loads -->
+  <div ng-if="false" style="background: #EB7B59; height: 96vh;"></div>
 
 	<!-- Dependencies -->
 	<script src="node_modules/angular/angular.js"></script>
